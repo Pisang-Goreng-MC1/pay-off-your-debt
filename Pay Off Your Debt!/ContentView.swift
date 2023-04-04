@@ -14,24 +14,24 @@ struct ContentView: View {
     @State var showingContacts: Bool = false
     
     // Data
-    @State var contact: String = ""
+    @State var contact: String = "Contact"
     @State var nominal: String = ""
     @State var note: String = ""
     @State var repaymentDate: Date = Date()
     @State var type: String = "Borrow"
     
-//    var numberFormatter: NumberFormatter = {
-//        let formatter = NumberFormatter()
-//        formatter.numberStyle = .currency
-//        return formatter
-//    }()
+    //    var numberFormatter: NumberFormatter = {
+    //        let formatter = NumberFormatter()
+    //        formatter.numberStyle = .currency
+    //        return formatter
+    //    }()
     
     var body: some View {
         VStack {
             Text(contact)
             Text(nominal)
             Text(note)
-//            Text(repaymentDate)
+            Text(repaymentDate, style: .date)
             Text(type)
             Button("New Debt") {
                 showingSheet.toggle()
@@ -43,7 +43,7 @@ struct ContentView: View {
                         List {
                             Section {
                                 HStack {
-                                    Text("Contact")
+                                    Text(contact)
                                     Spacer()
                                     Label("Contact", systemImage: "plus.circle")
                                         .font(.title3)
@@ -55,7 +55,6 @@ struct ContentView: View {
                                 .sheet(isPresented: $showingContacts) {
                                     ContactView(showingContact: $showingContacts, contact: $contact)
                                 }
-                                
                                 TextField("IDR0.00", text: $nominal)
                                 HStack {
                                     Text("Repayment Date")
@@ -63,6 +62,7 @@ struct ContentView: View {
                                     DatePicker(
                                         "",
                                         selection: $repaymentDate,
+                                        in: Date()...,
                                         displayedComponents: [.date]
                                     )
                                 }
@@ -78,7 +78,6 @@ struct ContentView: View {
                                     }
                                 }
                             }
-                            
                             Section {
                                 Button {
                                     self.showingSheet.toggle()
@@ -102,27 +101,19 @@ struct ContentView: View {
                                 self.showingSheet.toggle()
                             })
                         )
-                        
-                        
-                        
                     }
                     .background(Color(UIColor.systemGroupedBackground))
-                    
                 }
                 .presentationDetents([.large])
                 .presentationDragIndicator(.visible)
-                
-                
             }
         }
     }
-    
     
     struct ContentView_Previews: PreviewProvider {
         static var previews: some View {
             ContentView()
         }
-        
     }
 }
 
