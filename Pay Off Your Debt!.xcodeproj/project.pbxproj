@@ -12,6 +12,7 @@
 		75502EE329DA6C3200BD5F55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75502EE229DA6C3200BD5F55 /* Assets.xcassets */; };
 		75502EE629DA6C3200BD5F55 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75502EE529DA6C3200BD5F55 /* Preview Assets.xcassets */; };
 		75502EED29DA84D900BD5F55 /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502EEC29DA84D900BD5F55 /* ContactView.swift */; };
+		7555B06929DDD3E5006C2E8A /* DetailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555B06829DDD3E5006C2E8A /* DetailCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		75502EE229DA6C3200BD5F55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75502EE529DA6C3200BD5F55 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		75502EEC29DA84D900BD5F55 /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
+		7555B06829DDD3E5006C2E8A /* DetailCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 				75502EDE29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift */,
 				75502EE029DA6C3100BD5F55 /* ContentView.swift */,
 				75502EEC29DA84D900BD5F55 /* ContactView.swift */,
+				7555B06829DDD3E5006C2E8A /* DetailCardView.swift */,
 				75502EE229DA6C3200BD5F55 /* Assets.xcassets */,
 				75502EE429DA6C3200BD5F55 /* Preview Content */,
 			);
@@ -143,6 +146,7 @@
 				75502EE129DA6C3100BD5F55 /* ContentView.swift in Sources */,
 				75502EED29DA84D900BD5F55 /* ContactView.swift in Sources */,
 				75502EDF29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift in Sources */,
+				7555B06929DDD3E5006C2E8A /* DetailCardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
