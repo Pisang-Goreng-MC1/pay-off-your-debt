@@ -55,9 +55,18 @@ struct HomeView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     // TODO: Create debtcard view with a list
-                    DebtCard(cardColor: "CardPrimary")
-                    DebtCard(cardColor: "CardPrimary")
-                    DebtCard(cardColor: "CardSecondary")
+                    ScrollView{
+                        VStack(spacing: 20){
+                            DebtCard(cardColor: "CardPrimary")
+                            DebtCard(cardColor: "CardPrimary")
+                            DebtCard(cardColor: "CardSecondary")
+                            DebtCard(cardColor: "CardPrimary")
+                            DebtCard(cardColor: "CardPrimary")
+                            DebtCard(cardColor: "CardSecondary")
+                        }
+                    }
+                    .padding(.bottom)
+                    .frame(height: 500)
                     Spacer()
                 }
                 .padding(.horizontal, 20)
