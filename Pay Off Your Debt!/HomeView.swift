@@ -12,7 +12,7 @@ struct HomeView: View {
     @State private var summary : Int = 10000
     
     var body: some View {
-        NavigationView{
+        NavigationStack{
             VStack {
                 //Header Debt
                 VStack{
@@ -122,9 +122,7 @@ struct DebtCard: View {
             .foregroundColor(.white)
             .cornerRadius(19)
             .contextMenu(){
-                Button (){
-                    // Add this item to a list of favorites.
-                } label: {
+                NavigationLink(destination: EmptyView()) {
                     Label("Repay", systemImage: "checkmark.circle.fill")
                 }
                 Button (role: .destructive){
