@@ -11,7 +11,7 @@ import SwiftUI
 struct Pay_Off_Your_Debt_App: App {
     var body: some Scene {
         WindowGroup {
-            DetailView()
+            HomeView()
         }
     }
 }

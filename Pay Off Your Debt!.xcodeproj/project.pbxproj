@@ -10,7 +10,6 @@
 		23CD388029DE61E500019272 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD387F29DE61E500019272 /* HomeView.swift */; };
 		61A37D5929DEA38B00BA4E8C /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A37D5829DEA38B00BA4E8C /* DetailView.swift */; };
 		75502EDF29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502EDE29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift */; };
-		75502EE129DA6C3100BD5F55 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502EE029DA6C3100BD5F55 /* ContentView.swift */; };
 		75502EE329DA6C3200BD5F55 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75502EE229DA6C3200BD5F55 /* Assets.xcassets */; };
 		75502EE629DA6C3200BD5F55 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 75502EE529DA6C3200BD5F55 /* Preview Assets.xcassets */; };
 		75502EED29DA84D900BD5F55 /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502EEC29DA84D900BD5F55 /* ContactView.swift */; };
@@ -21,7 +20,6 @@
 		61A37D5829DEA38B00BA4E8C /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		75502EDB29DA6C3100BD5F55 /* Pay Off Your Debt!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pay Off Your Debt!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		75502EDE29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pay_Off_Your_Debt_App.swift; sourceTree = "<group>"; };
-		75502EE029DA6C3100BD5F55 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		75502EE229DA6C3200BD5F55 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		75502EE529DA6C3200BD5F55 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		75502EEC29DA84D900BD5F55 /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
@@ -59,7 +57,6 @@
 			children = (
 				75502EDE29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift */,
 				61A37D5829DEA38B00BA4E8C /* DetailView.swift */,
-				75502EE029DA6C3100BD5F55 /* ContentView.swift */,
 				75502EEC29DA84D900BD5F55 /* ContactView.swift */,
 				23CD387F29DE61E500019272 /* HomeView.swift */,
 				75502EE229DA6C3200BD5F55 /* Assets.xcassets */,
@@ -146,7 +143,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75502EE129DA6C3100BD5F55 /* ContentView.swift in Sources */,
 				23CD388029DE61E500019272 /* HomeView.swift in Sources */,
 				61A37D5929DEA38B00BA4E8C /* DetailView.swift in Sources */,
 				75502EED29DA84D900BD5F55 /* ContactView.swift in Sources */,
@@ -282,8 +278,8 @@
 				DEVELOPMENT_TEAM = JMJM53PGNF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSContactsUsageDescription = "Reason for accessing contacts";
 				INFOPLIST_KEY_CFBundleDisplayName = "Pay Off Your Debt!";
+				INFOPLIST_KEY_NSContactsUsageDescription = "Reason for accessing contacts";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -316,8 +312,8 @@
 				DEVELOPMENT_TEAM = JMJM53PGNF;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSContactsUsageDescription = "Reason for accessing contacts";
 				INFOPLIST_KEY_CFBundleDisplayName = "Pay Off Your Debt!";
+				INFOPLIST_KEY_NSContactsUsageDescription = "Reason for accessing contacts";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
