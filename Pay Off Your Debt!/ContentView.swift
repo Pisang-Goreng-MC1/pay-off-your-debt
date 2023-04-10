@@ -86,7 +86,6 @@ struct ContentView: View {
     @State var repays: [Repay] = []
     @State var wallets: [Wallet] = []
     
-    var wallet = Wallet(person: <#T##Person#>, totalAmount: <#T##Int#>, debt: <#T##[Debt]#>, repay: <#T##[Repay]#>)
     
     // Status
     @State private var showingSheet: Bool = false
