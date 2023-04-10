@@ -7,32 +7,114 @@
 
 import SwiftUI
 
+
+struct DebtType: Identifiable {
+    let id = UUID()
+    var name: String
+}
+
+struct Person: Identifiable {
+    let id = UUID()
+    var name: String
+    var phoneNumber: String
+}
+
+struct Wallet: Identifiable {
+    let id = UUID()
+    var person: Person
+    var totalAmount: Int
+    var debt: [Debt]
+    var repay: [Repay]
+    
+    func addDebt(debt: Debt) {
+        
+    }
+}
+
+
+struct Debt: Identifiable {
+    let id = UUID()
+    var person: Person
+    var amount: String
+    var personalNote: String
+    var repaymentDate: Date
+    var type: DebtType
+    
+    init(person: Person, amount: String, personalNote: String, repaymentDate: Date, type: DebtType) {
+        self.person = person
+        self.amount = amount
+        self.personalNote = personalNote == "" ? "-" : personalNote
+        self.repaymentDate = repaymentDate
+        self.type = type
+    }
+}
+
+struct Repay: Identifiable {
+    let id = UUID()
+    let idWallet: Int
+    var date: Date
+    var amount: Int
+}
+
+
+
+/*
+ Sebelumnya Zady hutang ke Afif = Rp50.000
+ 
+ Ziady hutang ke Afif = Rp20.000
+ - contact: Afif
+ - type: Borrow
+ - amount: 20000
+ - date: 6, Apr 2023
+ - repaymentDate: 10, Apr 2023
+ - personalNote: "pinjem yak"
+ 
+ Ziady bayar hutang ke Afif = Rp30.000
+ 
+ Perhitungan akhir, Ziady hutang ke Afif Rp40.000
+ 
+ */
+
+
 struct ContentView: View {
+    // Initial Data
+    @State var People: [Person] = []
+    @State var debtTypes: [DebtType] = [
+        DebtType(name: "Lent"),
+        DebtType(name: "Owe")]
+    @State var debts: [Debt] = [Debt]()
+    @State var repays: [Repay] = []
+    @State var wallets: [Wallet] = []
+    
+    
     // Status
-    @State var showingSheet: Bool = false
-    @State var showingAlert: Bool = false
-    @State var showingContacts: Bool = false
+    @State private var showingSheet: Bool = false
+    @State private var showingAlert: Bool = false
+    @State private var showingContacts: Bool = false
     
     // Data
-    @State var contact: String = "Contact"
-    @State var nominal: String = ""
-    @State var note: String = ""
-    @State var repaymentDate: Date = Date()
-    @State var type: String = "Borrow"
-    
-    //    var numberFormatter: NumberFormatter = {
-    //        let formatter = NumberFormatter()
-    //        formatter.numberStyle = .currency
-    //        return formatter
-    //    }()
+    @State private var person: String = "Contact"
+    @State private var amount: String = "0"
+    @State private var personalNote: String = ""
+    @State private var repaymentDate: Date = Date()
+    @State private var debtType: String = "Owe"
     
     var body: some View {
         VStack {
-            Text(contact)
-            Text(nominal)
-            Text(note)
-            Text(repaymentDate, style: .date)
-            Text(type)
+            List {
+                ForEach(debts) { debt in
+                    VStack {
+                        Text(debt.person.name)
+                        Text(String(debt.amount))
+                        Text(debt.personalNote)
+                        Text(debt.repaymentDate, style: .date)
+                        Text(debt.type.name)
+                    }
+                    
+                }
+            }
+            .listStyle(.plain)
+            
             Button("New Debt") {
                 showingSheet.toggle()
             }
@@ -43,7 +125,7 @@ struct ContentView: View {
                         List {
                             Section {
                                 HStack {
-                                    Text(contact)
+                                    Text(person)
                                     Spacer()
                                     Label("Contact", systemImage: "plus.circle")
                                         .font(.title3)
@@ -53,9 +135,9 @@ struct ContentView: View {
                                     self.showingContacts = true
                                 }
                                 .sheet(isPresented: $showingContacts) {
-                                    ContactView(showingContact: $showingContacts, contact: $contact)
+                                    ContactView(showingContact: $showingContacts, contact: $person)
                                 }
-                                TextField("IDR0.00", text: $nominal)
+                                TextField("IDR0.00", text: $amount)
                                 HStack {
                                     Text("Repayment Date")
                                     Spacer()
@@ -66,21 +148,22 @@ struct ContentView: View {
                                         displayedComponents: [.date]
                                     )
                                 }
-                                TextField("Personal Note", text: $note)
+                                TextField("Personal Note", text: $personalNote)
                             }
                             Section {
                                 HStack {
                                     Text("Type")
                                     Spacer()
-                                    Picker(selection: $type, label: Text("")) {
-                                        Text("Borrow").tag("Borrow")
-                                        Text("Lend").tag("Lend")
+                                    Picker("", selection: $debtType) {
+                                        Text("Owe").tag("Owe")
+                                        Text("Lent").tag("Lent")
                                     }
                                 }
                             }
                             Section {
                                 Button {
                                     self.showingSheet.toggle()
+                                    self.debts.append(Debt(person: Person(name: person, phoneNumber: "085"), amount: amount, personalNote: personalNote, repaymentDate: repaymentDate, type: debtTypes[0]))
                                 } label: {
                                     Text("Save")
                                         .frame(maxWidth: .infinity)
