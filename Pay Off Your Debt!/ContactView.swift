@@ -6,89 +6,29 @@
 //
 
 import SwiftUI
+import Contacts
 
 struct ContactView: View {
     // Status
     @Binding var showingContact: Bool
     @Binding var contact: String
+    @State var selectionContact: String = "Person 1"
+    @State private var contacts: [CNContact] = []
     
     var body: some View {
-        NavigationView {
-            NavigationStack {
-                List {
-                    HStack {
-                        Image(systemName: "person.fill")
-                            .frame(width: 32, height: 32)
-                            .background(Color(UIColor.systemGroupedBackground))
-                            .clipShape(Circle())
-                            .foregroundColor(Color.accentColor)
-                        VStack {
-                            Text("Person 1")
-                        }
-                    }
-                    .onTapGesture {
-                        contact = "Person 1"
-                        showingContact = false
-                    }
-                    HStack {
-                        Image(systemName: "person.fill")
-                            .frame(width: 32, height: 32)
-                            .background(Color(UIColor.systemGroupedBackground))
-                            .clipShape(Circle())
-                            .foregroundColor(Color.accentColor)
-                        VStack {
-                            Text("Person 2")
-                        }
-                    }
-                    .onTapGesture {
-                        contact = "Person 2"
-                        showingContact = false
-                    }
-                    HStack {
-                        Image(systemName: "person.fill")
-                            .frame(width: 32, height: 32)
-                            .background(Color(UIColor.systemGroupedBackground))
-                            .clipShape(Circle())
-                            .foregroundColor(Color.accentColor)
-                        VStack {
-                            Text("Person 3")
-                        }
-                    }
-                    .onTapGesture {
-                        contact = "Person 3"
-                        showingContact = false
-                    }
-                    HStack {
-                        Image(systemName: "person.fill")
-                            .frame(width: 32, height: 32)
-                            .background(Color(UIColor.systemGroupedBackground))
-                            .clipShape(Circle())
-                            .foregroundColor(Color.accentColor)
-                        VStack {
-                            Text("Person 4")
-                        }
-                    }
-                    .onTapGesture {
-                        contact = "Person 4"
-                        showingContact = false
-                    }
-                    HStack {
-                        Image(systemName: "person.fill")
-                            .frame(width: 32, height: 32)
-                            .background(Color(UIColor.systemGroupedBackground))
-                            .clipShape(Circle())
-                            .foregroundColor(Color.accentColor)
-                        VStack {
-                            Text("Person 5")
-                        }
-                    }
-                    .onTapGesture {
-                        contact = "Person 5"
-                        showingContact = false
-                    }
+        NavigationStack {
+            //contact get name
+            List {
+                ForEach(contacts, id: \.self){ singleContact in
+                    ExtractedView(contact: $contact, showingContact: $showingContact, name: singleContact.givenName)
                 }
-                .listStyle(.plain)
             }
+            .onAppear{
+                Task.init{
+                    await fetchContacts()
+                }
+            }
+            .listStyle(.plain)
             .navigationBarTitle("Contacts",displayMode: .automatic)
             .navigationBarItems(
                 leading:Button("Back", action: {
@@ -99,11 +39,47 @@ struct ContactView: View {
         }
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
+        
+    }
+    
+    func fetchContacts() async{
+        let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
+        let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
+        
+        do {
+            try CNContactStore().enumerateContacts(with: request) { contact, stop in
+                self.contacts.append(contact)
+            }
+        } catch {
+            print("Error fetching contacts: \(error.localizedDescription)")
+        }
     }
 }
 
 //struct ContactView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        ContactView()
+//        ContactView(showingContact: .constant(false), contact: .constant("nama"))
 //    }
 //}
+
+struct ExtractedView: View {
+    @Binding var contact: String
+    @Binding var showingContact: Bool
+    var name: String
+    var body: some View {
+        HStack {
+            Image(systemName: "person.fill")
+                .frame(width: 32, height: 32)
+                .background(Color(UIColor.systemGroupedBackground))
+                .clipShape(Circle())
+                .foregroundColor(Color.accentColor)
+            VStack {
+                Text(name)
+            }
+        }
+        .onTapGesture {
+            contact = name
+            showingContact = false
+        }
+    }
+}
