@@ -54,7 +54,7 @@ struct AddDebtSheet: View {
         }
     }
     
-    func isButtonDisabled(amount: String, person: String) -> Bool{
+    func isButtonDisabled() -> Bool{
         return amount.isEmpty || person.isEmpty
     }
     
@@ -70,7 +70,7 @@ struct AddDebtSheet: View {
                             .labelStyle(.iconOnly)
                     }
                     .onTapGesture {
-                        self.showingContacts = true
+                        showingContacts = true
                     }
                     .sheet(isPresented: $showingContacts) {
                         ContactView(showingContact: $showingContacts, contact: $person)
@@ -109,9 +109,8 @@ struct AddDebtSheet: View {
                     Text("Save")
                         .frame(maxWidth: .infinity)
                 }
-                .disabled(isButtonDisabled(amount: amount, person: person))
-                .listRowBackground(isButtonDisabled(amount: amount, person: person) ? Color.gray : Color.accentColor   )
-                    
+                .disabled(isButtonDisabled())
+                .listRowBackground(isButtonDisabled() ? Color.gray : Color.accentColor   )
                 .foregroundColor(Color.white)
                 }
                 
