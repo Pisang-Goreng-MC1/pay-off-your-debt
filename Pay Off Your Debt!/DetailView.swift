@@ -13,6 +13,7 @@ struct Loan {
 
 import SwiftUI
 
+
 struct DetailView: View {
     @State private var loans: [Loan] = [
         Loan(amount: 10000, type: "Lent", note: "Kopi 1 Cangkir", createdAt: "21/01/01"),
@@ -21,67 +22,126 @@ struct DetailView: View {
         Loan(amount: 40000, type: "Lent", note: "Kopi 4 Cangkir", createdAt: "21/01/01"),
     ]
     
+    
+    @State private var bgColorRed = Color(.sRGB, red: 0.98, green: 0.9, blue: 0.2)
+    @State private var favoriteColor="anjay"
+    var colors = ["anjay", "anjay2"]
+    
     var body: some View {
         NavigationView{
             VStack{
-                VStack {
-                    Text ("Your Recent Debtsssss")
-                    HStack {
-                        Text ("- Rp.1.000.000")
-                            .foregroundColor(.red)
-                            .font(.system(size: 25))
-                            .bold()
-                        
-                        Image (systemName: "eye.slash.fill")
-                    }
-                    Spacer()
-                        .frame(minHeight:35,maxHeight:35)
-                }
-                .padding(.all, 20.0)
-                .frame(maxWidth: .infinity)
-                .background (Color("YellowBgt"))
-                
-                
-                VStack {
-                    List {
-                        ForEach(loans, id: \.amount) {
-                            loan in ListItem(amount: loan.amount, type: loan.type, note: loan.note, createdAt: loan.createdAt)
+                VStack{
+                    Text("You Owe")
+                    Text("RP10.000")
+                    Text("Check your friend's pocket or unfriend them!")
+                    HStack{
+                        VStack{
+                            Circle()
+                                .fill(.white)
+                                .frame(width: 150,height: 50)
+                                .overlay {
+                                    Image(systemName: "plus")
+                                        .foregroundColor(.red)
+                                }
+                            Text("Add")
+                        }
+                        VStack{
+                            Circle()
+                                .fill(.white)
+                                .frame(width: 150,height: 50)
+                                .overlay {
+                                    Image(systemName: "banknote")
+                                        .foregroundColor(.red)
+                                }
+                            Text("Repay")
                         }
                         
-                    }.listStyle(.plain)
+                    }
+                    
+                    
                 }
                 
+                .frame(maxWidth: .infinity)
+                
+                
+                VStack(alignment: .leading){
+                    Picker("What is", selection:$favoriteColor){
+                        ForEach(colors, id: \.self) {
+                            Text($0)
+                        }
+                        
+                    }
+                    .pickerStyle(.segmented)
+                    .frame(width: 250)
+                    Spacer()
+                    
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 20)
+                .background(.white)
+                .cornerRadius(24)
+                .padding(.bottom, -50)
+                .padding(.bottom)
+                .frame(height: 500)
+            }
+            
+            .frame(maxWidth: .infinity)
+            .navigationBarTitle("Monica", displayMode: .inline)
+            .background(Color.blue)
+            .toolbar{
+                ToolbarItem(placement: .navigationBarLeading){
+                        Image(systemName: "chevron.backward")
+                    
+                }
                 
             }
-            .navigationBarTitle("Monica", displayMode: .inline)
+            .background(.red)
             
         }
+        
+        
+        //                VStack {
+        //                    List {
+        //                        ForEach(loans, id: \.amount) {
+        //                            loan in ListItem(amount: loan.amount, type: loan.type, note: loan.note, createdAt: loan.createdAt)
+        //                        }
+        //
+        //                    }.listStyle(.plain)
+        //                }
+        
+        
+        
     }
-}
-
-struct ListItem: View {
-    @State var amount: Int
-    @State var type: String
-    @State var note: String
-    @State var createdAt: String
     
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text ("I Owe Rp \(amount)")
-            HStack(spacing: 5) {
-                Image (systemName: "eye.slash.fill").resizable().scaledToFit().frame(width: 14)
-                Text(type).font(.system(size: 14)).opacity(0.5)
-            }
-            Text(note).font(.system(size: 14)).opacity(0.5)
-        }
-    }
 }
 
-//struct DetailView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DetailView()
+
+
+
+//struct ListItem: View {
+//    @State var amount: Int
+//    @State var type: String
+//    @State var note: String
+//    @State var createdAt: String
+//
+//    var body: some View {
+//        VStack(alignment: .leading, spacing: 4) {
+//            Text ("I Owe Rp \(amount)")
+//            HStack(spacing: 5) {
+//                Image (systemName: "eye.slash.fill").resizable().scaledToFit().frame(width: 14)
+//                Text(type).font(.system(size: 14)).opacity(0.5)
+//            }
+//            Text(note).font(.system(size: 14)).opacity(0.5)
+//        }
 //    }
 //}
+
+
+struct DetailView_Previews: PreviewProvider {
+    static var previews: some View {
+        DetailView()
+    }
+}
 
 
 
