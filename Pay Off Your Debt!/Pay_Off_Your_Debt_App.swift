@@ -9,9 +9,12 @@ import SwiftUI
 
 @main
 struct Pay_Off_Your_Debt_App: App {
+    let persistenceController = PersistenceController.shared
+    
     var body: some Scene {
         WindowGroup {
-            DetailView()
+            HomeView()
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }
