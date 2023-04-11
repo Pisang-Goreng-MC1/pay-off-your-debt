@@ -10,6 +10,9 @@
 		230801B829E4F08800AD64F4 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 230801B629E4F08800AD64F4 /* DataModel.xcdatamodeld */; };
 		230801BA29E4F24300AD64F4 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230801B929E4F24300AD64F4 /* Persistence.swift */; };
 		230801BC29E4F8CD00AD64F4 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230801BB29E4F8CD00AD64F4 /* Utils.swift */; };
+		23C0783629E5AF2A00701A3B /* AddDebtSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C0783529E5AF2A00701A3B /* AddDebtSheet.swift */; };
+		23C0783829E5AF8900701A3B /* DebtCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C0783729E5AF8900701A3B /* DebtCard.swift */; };
+		23C0783A29E5B10600701A3B /* ListActiveDebts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C0783929E5B10600701A3B /* ListActiveDebts.swift */; };
 		23CD388029DE61E500019272 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD387F29DE61E500019272 /* HomeView.swift */; };
 		61A37D5929DEA38B00BA4E8C /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A37D5829DEA38B00BA4E8C /* DetailView.swift */; };
 		75502EDF29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502EDE29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift */; };
@@ -22,6 +25,9 @@
 		230801B729E4F08800AD64F4 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		230801B929E4F24300AD64F4 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		230801BB29E4F8CD00AD64F4 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		23C0783529E5AF2A00701A3B /* AddDebtSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddDebtSheet.swift; sourceTree = "<group>"; };
+		23C0783729E5AF8900701A3B /* DebtCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebtCard.swift; sourceTree = "<group>"; };
+		23C0783929E5B10600701A3B /* ListActiveDebts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListActiveDebts.swift; sourceTree = "<group>"; };
 		23CD387F29DE61E500019272 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		61A37D5829DEA38B00BA4E8C /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		75502EDB29DA6C3100BD5F55 /* Pay Off Your Debt!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pay Off Your Debt!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -42,6 +48,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		23C0783229E5AAC100701A3B /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				23C0783529E5AF2A00701A3B /* AddDebtSheet.swift */,
+				23C0783729E5AF8900701A3B /* DebtCard.swift */,
+				23C0783929E5B10600701A3B /* ListActiveDebts.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		75502ED229DA6C3100BD5F55 = {
 			isa = PBXGroup;
 			children = (
@@ -62,6 +78,7 @@
 			isa = PBXGroup;
 			children = (
 				75502EDE29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift */,
+				23C0783229E5AAC100701A3B /* Components */,
 				61A37D5829DEA38B00BA4E8C /* DetailView.swift */,
 				230801B629E4F08800AD64F4 /* DataModel.xcdatamodeld */,
 				75502EEC29DA84D900BD5F55 /* ContactView.swift */,
@@ -154,10 +171,13 @@
 			files = (
 				23CD388029DE61E500019272 /* HomeView.swift in Sources */,
 				230801B829E4F08800AD64F4 /* DataModel.xcdatamodeld in Sources */,
+				23C0783A29E5B10600701A3B /* ListActiveDebts.swift in Sources */,
+				23C0783829E5AF8900701A3B /* DebtCard.swift in Sources */,
 				61A37D5929DEA38B00BA4E8C /* DetailView.swift in Sources */,
 				230801BC29E4F8CD00AD64F4 /* Utils.swift in Sources */,
 				230801BA29E4F24300AD64F4 /* Persistence.swift in Sources */,
 				75502EED29DA84D900BD5F55 /* ContactView.swift in Sources */,
+				23C0783629E5AF2A00701A3B /* AddDebtSheet.swift in Sources */,
 				75502EDF29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
