@@ -74,8 +74,8 @@ struct HomeView: View {
     @State private var showingContacts: Bool = false
     
     // Data
-    @State private var person: String = "Contact"
-    @State private var amount: String = "0"
+    @State private var person: String = ""
+    @State private var amount: String = ""
     @State private var personalNote: String = ""
     @State private var repaymentDate: Date = Date()
     @State private var debtType: String = "Owe"
@@ -90,6 +90,11 @@ struct HomeView: View {
         sortDescriptors: [],
         animation: .default)
     private var wallets: FetchedResults<Wallet>
+    
+//    private var isButtonDisabled =
+    func isButtonDisabled() -> Bool{
+        return amount.isEmpty || person.isEmpty
+    }
     
     var body: some View {
         NavigationStack{
@@ -189,6 +194,8 @@ struct HomeView: View {
                                     ContactView(showingContact: $showingContacts, contact: $person)
                                 }
                                 TextField("IDR0.00", text: $amount)
+                                    .keyboardType(.decimalPad)
+                                
                                 HStack {
                                     Text("Repayment Date")
                                     Spacer()
@@ -216,11 +223,15 @@ struct HomeView: View {
                                     self.showingSheet.toggle()
                                     addDebt() // TODO:
                                     self.goToPage = true
-                                } label: {
+                                }
+                            label: {
                                     Text("Save")
                                         .frame(maxWidth: .infinity)
                                 }
-                                .listRowBackground(Color.accentColor)
+                                .disabled(isButtonDisabled())
+//                                .background(Color.red)
+                                .listRowBackground(isButtonDisabled() ? Color.gray : Color.accentColor   )
+
                                 .foregroundColor(Color.white)
                             }
                             
@@ -346,9 +357,9 @@ struct DebtCard: View {
         }
     }
 }
-
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        HomeView()
-    }
-}
+//
+//struct HomeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        HomeView()
+//    }
+//}
