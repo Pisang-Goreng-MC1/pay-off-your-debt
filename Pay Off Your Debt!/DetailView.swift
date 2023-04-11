@@ -29,73 +29,79 @@ struct DetailView: View {
     
     var body: some View {
         NavigationView{
-            VStack{
+            ZStack (alignment: .top){
+                Color.blue.ignoresSafeArea()
                 VStack{
-                    Text("You Owe")
-                    Text("RP10.000")
-                    Text("Check your friend's pocket or unfriend them!")
-                    HStack{
-                        VStack{
-                            Circle()
-                                .fill(.white)
-                                .frame(width: 150,height: 50)
-                                .overlay {
-                                    Image(systemName: "plus")
-                                        .foregroundColor(.red)
-                                }
-                            Text("Add")
+                    VStack{
+                        Text("You Owe")
+                            .font(.system(size: 48))
+                            .fontWeight(.heavy)
+                        Text("RP10.000")
+                        Text("Check your friend's pocket or unfriend them!")
+                        HStack{
+                            VStack{
+                                Circle()
+                                    .fill(.white)
+                                    .frame(width: 150,height: 50)
+                                    .overlay {
+                                        Image(systemName: "plus")
+                                            .foregroundColor(.red)
+                                    }
+                                Text("Add")
+                            }
+                            VStack{
+                                Circle()
+                                    .fill(.white)
+                                    .frame(width: 150,height: 50)
+                                    .overlay {
+                                        Image(systemName: "banknote")
+                                            .foregroundColor(.red)
+                                    }
+                                Text("Repay")
+                            }
+                            
                         }
-                        VStack{
-                            Circle()
-                                .fill(.white)
-                                .frame(width: 150,height: 50)
-                                .overlay {
-                                    Image(systemName: "banknote")
-                                        .foregroundColor(.red)
-                                }
-                            Text("Repay")
-                        }
+                        
                         
                     }
                     
+                    .frame(maxWidth: .infinity)
                     
-                }
-                
-                .frame(maxWidth: .infinity)
-                
-                
-                VStack(alignment: .leading){
-                    Picker("What is", selection:$favoriteColor){
-                        ForEach(colors, id: \.self) {
-                            Text($0)
+                    
+                    VStack(alignment: .leading){
+                        Picker("What is", selection:$favoriteColor){
+                            ForEach(colors, id: \.self) {
+                                Text($0)
+                            }
+                            
                         }
+                        .padding(30)
+                        .pickerStyle(.segmented)
+                        .frame(width: 250)
+                        Spacer()
                         
                     }
-                    .pickerStyle(.segmented)
-                    .frame(width: 250)
-                    Spacer()
-                    
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 20)
+                    .background(.white)
+                    .cornerRadius(24)
+                    .padding(.bottom, -50)
+                    .padding(.bottom)
+                    .frame(height: 500)
                 }
+                
                 .frame(maxWidth: .infinity)
-                .padding(.horizontal, 20)
-                .background(.white)
-                .cornerRadius(24)
-                .padding(.bottom, -50)
-                .padding(.bottom)
-                .frame(height: 500)
-            }
-            
-            .frame(maxWidth: .infinity)
-            .navigationBarTitle("Monica", displayMode: .inline)
+                .background(Color.blue)
+                .toolbar{
+                    ToolbarItem(placement: .navigationBarLeading){
+                            Image(systemName: "chevron.backward")
+                    }
+                    ToolbarItem(placement: .principal){
+                        Text("HI")
+                    }
+                }
             .background(Color.blue)
-            .toolbar{
-                ToolbarItem(placement: .navigationBarLeading){
-                        Image(systemName: "chevron.backward")
-                    
-                }
-                
             }
-            .background(.red)
             
         }
         
