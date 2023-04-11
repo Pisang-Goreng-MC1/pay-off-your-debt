@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		230801B829E4F08800AD64F4 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 230801B629E4F08800AD64F4 /* DataModel.xcdatamodeld */; };
+		230801BA29E4F24300AD64F4 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230801B929E4F24300AD64F4 /* Persistence.swift */; };
+		230801BC29E4F8CD00AD64F4 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230801BB29E4F8CD00AD64F4 /* Utils.swift */; };
 		23CD388029DE61E500019272 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CD387F29DE61E500019272 /* HomeView.swift */; };
 		61A37D5929DEA38B00BA4E8C /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A37D5829DEA38B00BA4E8C /* DetailView.swift */; };
 		75502EDF29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75502EDE29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift */; };
@@ -16,6 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		230801B729E4F08800AD64F4 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		230801B929E4F24300AD64F4 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		230801BB29E4F8CD00AD64F4 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		23CD387F29DE61E500019272 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		61A37D5829DEA38B00BA4E8C /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		75502EDB29DA6C3100BD5F55 /* Pay Off Your Debt!.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pay Off Your Debt!.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,8 +63,11 @@
 			children = (
 				75502EDE29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift */,
 				61A37D5829DEA38B00BA4E8C /* DetailView.swift */,
+				230801B629E4F08800AD64F4 /* DataModel.xcdatamodeld */,
 				75502EEC29DA84D900BD5F55 /* ContactView.swift */,
 				23CD387F29DE61E500019272 /* HomeView.swift */,
+				230801BB29E4F8CD00AD64F4 /* Utils.swift */,
+				230801B929E4F24300AD64F4 /* Persistence.swift */,
 				75502EE229DA6C3200BD5F55 /* Assets.xcassets */,
 				75502EE429DA6C3200BD5F55 /* Preview Content */,
 			);
@@ -144,7 +153,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				23CD388029DE61E500019272 /* HomeView.swift in Sources */,
+				230801B829E4F08800AD64F4 /* DataModel.xcdatamodeld in Sources */,
 				61A37D5929DEA38B00BA4E8C /* DetailView.swift in Sources */,
+				230801BC29E4F8CD00AD64F4 /* Utils.swift in Sources */,
+				230801BA29E4F24300AD64F4 /* Persistence.swift in Sources */,
 				75502EED29DA84D900BD5F55 /* ContactView.swift in Sources */,
 				75502EDF29DA6C3100BD5F55 /* Pay_Off_Your_Debt_App.swift in Sources */,
 			);
@@ -357,6 +369,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		230801B629E4F08800AD64F4 /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				230801B729E4F08800AD64F4 /* DataModel.xcdatamodel */,
+			);
+			currentVersion = 230801B729E4F08800AD64F4 /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 75502ED329DA6C3100BD5F55 /* Project object */;
 }
