@@ -14,6 +14,9 @@ struct Loan {
 import SwiftUI
 
 struct DetailView: View {
+    var personName: String
+    @State private var showingSheet: Bool = false
+    @State private var showingAlert: Bool = false
     @State private var loans: [Loan] = [
         Loan(amount: 10000, type: "Lent", note: "Kopi 1 Cangkir", createdAt: "21/01/01"),
         Loan(amount: 20000, type: "Borrow", note: "Kopi 2 Cangkir", createdAt: "21/01/01"),
@@ -33,6 +36,12 @@ struct DetailView: View {
                             .bold()
                         
                         Image (systemName: "eye.slash.fill")
+                    }
+                    HStack {
+                        Button("New Debt") {
+                            self.showingSheet.toggle()
+                        }
+                        .buttonStyle(.borderedProminent)
                     }
                     Spacer()
                         .frame(minHeight:35,maxHeight:35)
@@ -54,6 +63,9 @@ struct DetailView: View {
                 
             }
             .navigationBarTitle("Monica", displayMode: .inline)
+            .sheet(isPresented: $showingSheet) {
+                AddDebtDetailSheet(personName: personName, showingAlert: $showingAlert, showingSheet: $showingSheet)
+            }
             
         }
     }

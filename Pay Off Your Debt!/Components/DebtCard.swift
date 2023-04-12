@@ -16,7 +16,7 @@ struct DebtCard: View {
     var cardColor : String
     
     var body: some View {
-        NavigationLink(destination: EmptyView()){
+        NavigationLink(destination: DetailView(personName: personName)){
             HStack(spacing: 60.0){
                 Text("\(personName)")
                 VStack(){
