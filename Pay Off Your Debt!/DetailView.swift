@@ -11,6 +11,12 @@ struct Loan {
     let createdAt: String;
 }
 
+struct Dummy {
+    let amount: Int
+}
+
+
+
 import SwiftUI
 
 
@@ -22,66 +28,104 @@ struct DetailView: View {
         Loan(amount: 40000, type: "Lent", note: "Kopi 4 Cangkir", createdAt: "21/01/01"),
     ]
     
+    @State private var dummys: [Dummy] = [
+        Dummy(amount: 10000)
+    ]
     
-    @State private var bgColorRed = Color(.sRGB, red: 0.98, green: 0.9, blue: 0.2)
-    @State private var favoriteColor="anjay"
-    var colors = ["anjay", "anjay2"]
+    
+    
+    
+    @State private var tabType = ["Debt", "Repay"]
+    @State private var selectedTab = 0
     
     var body: some View {
         NavigationView{
             ZStack (alignment: .top){
-                Color.blue.ignoresSafeArea()
+                Color("ColorMerah").ignoresSafeArea()
                 VStack{
                     VStack{
                         Text("You Owe")
-                            .font(.system(size: 48))
-                            .fontWeight(.heavy)
+                            .font(.system(size: 16))
+                            .fontWeight(.bold)
                         Text("RP10.000")
+                            .font(.system(size: 32))
+                            .fontWeight(.bold)
                         Text("Check your friend's pocket or unfriend them!")
-                        HStack{
+                            .font(.system(size: 12))
+                            .padding(.bottom, 20)
+                        HStack(spacing: 40){
                             VStack{
                                 Circle()
                                     .fill(.white)
-                                    .frame(width: 150,height: 50)
+                                    .frame(height: 50)
                                     .overlay {
                                         Image(systemName: "plus")
                                             .foregroundColor(.red)
                                     }
-                                Text("Add")
+                                Text("New Debt")
+                                    .font(.system(size: 12))
+                                    .fontWeight(.bold)
                             }
+                            
                             VStack{
                                 Circle()
                                     .fill(.white)
-                                    .frame(width: 150,height: 50)
+                                    .frame(height: 50)
                                     .overlay {
                                         Image(systemName: "banknote")
                                             .foregroundColor(.red)
                                     }
                                 Text("Repay")
+                                    .font(.system(size: 12))
+                                    .fontWeight(.bold)
                             }
                             
-                        }
+                        }.padding(.bottom, 8)
                         
                         
                     }
-                    
+                    .toolbar{
+                        ToolbarItem(placement: .navigationBarLeading){
+                            Image(systemName: "chevron.backward")
+                        }
+                        ToolbarItem(placement: .principal){
+                            Text("ini tolong diubah dinamis")
+                        }
+                    }
+                    .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     
                     
-                    VStack(alignment: .leading){
-                        Picker("What is", selection:$favoriteColor){
-                            ForEach(colors, id: \.self) {
-                                Text($0)
-                            }
+                    VStack(){
+                        Picker("What is", selection:
+                                $selectedTab){
+                            Text("Loan").tag(0)
+                            Text("Repay").tag(1)
+                            
+                            
                             
                         }
-                        .padding(30)
-                        .pickerStyle(.segmented)
-                        .frame(width: 250)
-                        Spacer()
+                                .padding(30)
+                                .pickerStyle(.segmented)
+                                .frame(width: 250)
+                        
+                        VStack {
+                            List {
+                                if selectedTab == 0 {
+                                    ForEach(loans, id: \.amount) {
+                                        loan in ListItem(amount: loan.amount, type: loan.type, note: loan.note, createdAt: loan.createdAt)
+                                    }
+                                } else {
+                                    ForEach(dummys, id: \.amount) {
+                                       dummy in  Text("sa")
+                                    }
+                                }
+                                
+                            }.listStyle(.plain)
+                        }
                         
                     }
-                    .frame(maxWidth: .infinity)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .padding(.horizontal, 20)
                     .background(.white)
                     .cornerRadius(24)
@@ -91,30 +135,11 @@ struct DetailView: View {
                 }
                 
                 .frame(maxWidth: .infinity)
-                .background(Color.blue)
-                .toolbar{
-                    ToolbarItem(placement: .navigationBarLeading){
-                            Image(systemName: "chevron.backward")
-                    }
-                    ToolbarItem(placement: .principal){
-                        Text("HI")
-                    }
-                }
-            .background(Color.blue)
+                .background(Color("ColorMerah"))
+                
             }
             
         }
-        
-        
-        //                VStack {
-        //                    List {
-        //                        ForEach(loans, id: \.amount) {
-        //                            loan in ListItem(amount: loan.amount, type: loan.type, note: loan.note, createdAt: loan.createdAt)
-        //                        }
-        //
-        //                    }.listStyle(.plain)
-        //                }
-        
         
         
     }
@@ -124,30 +149,30 @@ struct DetailView: View {
 
 
 
-//struct ListItem: View {
-//    @State var amount: Int
-//    @State var type: String
-//    @State var note: String
-//    @State var createdAt: String
-//
-//    var body: some View {
-//        VStack(alignment: .leading, spacing: 4) {
-//            Text ("I Owe Rp \(amount)")
-//            HStack(spacing: 5) {
-//                Image (systemName: "eye.slash.fill").resizable().scaledToFit().frame(width: 14)
-//                Text(type).font(.system(size: 14)).opacity(0.5)
-//            }
-//            Text(note).font(.system(size: 14)).opacity(0.5)
-//        }
-//    }
-//}
-
-
-struct DetailView_Previews: PreviewProvider {
-    static var previews: some View {
-        DetailView()
+struct ListItem: View {
+    @State var amount: Int
+    @State var type: String
+    @State var note: String
+    @State var createdAt: String
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text ("I Owe Rp \(amount)")
+            HStack(spacing: 5) {
+                Image (systemName: "eye.slash.fill").resizable().scaledToFit().frame(width: 14)
+                Text(type).font(.system(size: 14)).opacity(0.5)
+            }
+            Text(note).font(.system(size: 14)).opacity(0.5)
+        }
     }
 }
+
+
+//struct DetailView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        DetailView()
+//    }
+//}
 
 
 
