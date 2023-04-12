@@ -13,39 +13,29 @@ struct DebtCard: View {
     @State var totalAmount: Int32
     //    @State var createdAt: String // TODO:
     
-    var cardColor : String
-    
     var body: some View {
-        NavigationLink(destination: EmptyView()){
-            HStack(spacing: 60.0){
-                Text("\(personName)")
+        NavigationLink(destination: DetailView()){
+            HStack(){
+                Text("Alexander MonMon")
+                    .bold()
+                Spacer()
                 VStack(){
-                    Text("I \(type) RP. \(totalAmount)") // TODO: Format currency
-                    Text("31 days ago") // TODO
+                    Text("I \(type) \(moneyFormater(amount: totalAmount))")
+                        .foregroundColor((type == "owe" ? .red : .green))// TODO: Format currency
+                    Text("31 days ago")
+                        .italic()// TODO
                 }
                 
             }
-            .padding(.horizontal, 10.0)
-            .frame(width: 360, height: 100, alignment: .center)
-            .background(Color(cardColor))
-            .foregroundColor(.white)
-            .cornerRadius(19)
-            .contextMenu(){
-                NavigationLink(destination: EmptyView()) {
-                    Label("Repay", systemImage: "checkmark.circle.fill")
-                }
-                Button (role: .destructive){
-                    // Open Maps and center it on this item.
-                } label: {
-                    Label("Delete", systemImage: "trash")
-                }
-            }
+            .padding(.horizontal, 20)
+            .frame(width: 360, height: 80, alignment: .center)
+            .foregroundColor(.black)
         }
     }
 }
 
-//struct DebtCard_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DebtCard()
-//    }
-//}
+struct DebtCard_Previews: PreviewProvider {
+    static var previews: some View {
+        DebtCard(personName: "Alexander MonMon", type: "lent", totalAmount: 10000)
+    }
+}

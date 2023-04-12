@@ -22,18 +22,13 @@ struct ListActiveDebts: View {
                 .padding(.vertical, 20)
                 .foregroundColor(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            
-            // TODO: Create debtcard view with a list
-            ScrollView{
-                VStack(spacing: 20){
+            VStack{
+                List {
                     ForEach(wallets, id: \.id) {
-                        wallet in DebtCard(personName: wallet.person?.name ?? "Unknown", type: "owe", totalAmount: wallet.totalAmount, cardColor: "CardPrimary")
+                        wallet in DebtCard(personName: wallet.person?.name ?? "Unknown", type: "owe", totalAmount: wallet.totalAmount)
                     }
-                }
+                }.listStyle(.plain)
             }
-            .padding(.bottom)
-            .frame(height: 500)
-            Spacer()
         }
         .padding(.horizontal, 20)
         .background(.white)
