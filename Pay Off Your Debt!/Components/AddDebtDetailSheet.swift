@@ -115,7 +115,7 @@ struct AddDebtDetailSheet: View {
             )
         }
         .background(Color(UIColor.systemGroupedBackground))
-        .presentationDetents([.large])
+        .presentationDetents([.medium])
         .presentationDragIndicator(.visible)
     }
 }
