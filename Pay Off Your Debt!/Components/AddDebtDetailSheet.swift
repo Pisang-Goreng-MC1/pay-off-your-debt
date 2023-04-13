@@ -36,6 +36,7 @@ struct AddDebtDetailSheet: View {
             if let existingWallet = wallets.first(where: { $0.person?.name ?? "" == personName }) {
 
                 if var debts = existingWallet.mutableSetValue(forKey: "debts") as? Set<Debt> {
+                    newDebt.person = existingWallet.person
                     debts.insert(newDebt)
                     existingWallet.debts = debts as NSSet
                 }

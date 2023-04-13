@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct DebtCard: View {
+    let persistenceController = PersistenceController.shared
     @State var personName: String
 //    @State var type: String // TODO: hitung banyakan hutang atau ngutangin
     var totalAmount: Int32
     //    @State var createdAt: String // TODO:
     
     var body: some View {
-        NavigationLink(destination: DetailView(personName: personName, totalAmount: totalAmount)){
+        NavigationLink(destination: DetailView(personName: $personName, totalAmount: totalAmount).environment(\.managedObjectContext, persistenceController.container.viewContext)){
             HStack(){
                 Grid {
                     GridRow {
@@ -28,11 +29,12 @@ struct DebtCard: View {
 //                            Text("I \(moneyFormater(amount: totalAmount))")
 //
                                 // TODO: Format currency
-                            Text("2 days ago")
-                                .italic()// TODO
+//                            Text("2 days ago")
+//                                .italic()// TODO
                         }
                     }
                 }
+                .padding(.vertical, 15)
                 
                 
             }

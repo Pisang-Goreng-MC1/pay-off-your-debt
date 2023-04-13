@@ -19,13 +19,17 @@ struct Dummy {
 
 import SwiftUI
 import Combine
+import CoreData
 
 
 struct DetailView: View {
     @Environment(\.presentationMode) var presentationMode
     let persistenceController = PersistenceController.shared
+    @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(entity: Debt.entity(), sortDescriptors: []) var debts: FetchedResults<Debt>
     
-    var personName: String
+    
+    @Binding var personName: String
     @State private var amount: String = ""
     @State private var newDebtSheet: Bool = false
     @State private var repaySheet: Bool = false
@@ -45,23 +49,42 @@ struct DetailView: View {
         Dummy(amount: 10000)
     ]
     
-    private var backButton: some View {
-            Button(action: {
-                // Navigate to a specific view when the back button is tapped
-                presentationMode.wrappedValue.dismiss()
-                // Alternatively, you could use a NavigationLink to navigate to a specific view
-                //NavigationLink(destination: HomeView()) {
-                //    Text("Back")
-                //}
-            }) {
-                Image(systemName: "chevron.backward")
-                Text("Back")
-            }
+    private func getListDebts () -> [Debt] {
+        print("Running Debt")
+        return debts.filter {$0.person?.name == personName && $0.type != "Repay"}
+    }
+    
+    private func getListRepay () -> [Debt] {
+        return debts.filter {
+            print($0.person?.name, "NAME dari person object")
+            print(personName, "Person Name")
+            return $0.person?.name == personName && $0.type == "Repay"
         }
+    }
+    
+    //    var listDebts = debts.filter {$0.name == personName}
+    
+    //    var repays: [Debt]
+    
+    private var backButton: some View {
+        Button(action: {
+            // Navigate to a specific view when the back button is tapped
+            presentationMode.wrappedValue.dismiss()
+            // Alternatively, you could use a NavigationLink to navigate to a specific view
+            //NavigationLink(destination: HomeView()) {
+            //    Text("Back")
+            //}
+        }) {
+            Image(systemName: "chevron.backward")
+            Text("Back")
+        }
+    }
     
     
     @State private var tabType = ["Debt", "Repay"]
     @State private var selectedTab = 0
+    
+    
     
     var body: some View {
         ZStack (alignment: .top){
@@ -99,42 +122,47 @@ struct DetailView: View {
                             
                         }
                         
-                        VStack{
-                            Button {
-                                self.repaySheet.toggle()
-                                
-                            } label: {
-                                VStack {
-                                    Circle()
-                                        .fill(.white)
-                                        .frame(height: 50)
-                                        .overlay {
-                                            Image(systemName: "banknote")
-                                                .foregroundColor(.red)
-                                        }
-                                    Text("Repay")
-                                        .font(.system(size: 12))
-                                        .fontWeight(.bold)
+                        if(totalAmount < 0) {
+                            VStack{
+                                Button {
+                                    self.repaySheet.toggle()
+                                    
+                                } label: {
+                                    VStack {
+                                        Circle()
+                                            .fill(.white)
+                                            .frame(height: 50)
+                                            .overlay {
+                                                Image(systemName: "banknote")
+                                                    .foregroundColor(.red)
+                                            }
+                                        Text("Repay")
+                                            .font(.system(size: 12))
+                                            .fontWeight(.bold)
+                                    }
                                 }
+                                
+                                
                             }
-                            
                         }
+                        
+                       
                         
                     }.padding(.bottom, 24)
                     
                     
                 }
-                            .navigationBarBackButtonHidden(true)
-                            .navigationBarItems(leading: backButton)
-//                .navigationBarBackButtonHidden()
-//                    .toolbar{
-//                        ToolbarItem(placement: .navigationBarLeading){
-//                            HStack {
-//                                Image(systemName: "chevron.backward")
-//                                    .font(.system(size: 20))
-//                            }
-//                        }
-//                    }
+                .navigationBarBackButtonHidden(true)
+                .navigationBarItems(leading: backButton)
+                //                .navigationBarBackButtonHidden()
+                //                    .toolbar{
+                //                        ToolbarItem(placement: .navigationBarLeading){
+                //                            HStack {
+                //                                Image(systemName: "chevron.backward")
+                //                                    .font(.system(size: 20))
+                //                            }
+                //                        }
+                //                    }
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 
@@ -155,12 +183,12 @@ struct DetailView: View {
                     VStack {
                         List {
                             if selectedTab == 0 {
-                                ForEach(loans, id: \.amount) {
-                                    loan in ListItem(amount: loan.amount, type: loan.type, note: loan.note, createdAt: loan.createdAt)
+                                ForEach(getListDebts(), id: \.id) {
+                                    debt in ListItem(amount: debt.amount, type: debt.type ?? "", personalNote: debt.personalNote ?? "")
                                 }
                             } else {
-                                ForEach(dummys, id: \.amount) {
-                                    dummy in  Text("sa")
+                                ForEach(getListRepay(), id: \.id) {
+                                    repay in ListItem(amount: repay.amount, type: repay.type ?? "", personalNote: repay.personalNote ?? "")
                                 }
                             }
                             
@@ -186,7 +214,7 @@ struct DetailView: View {
         }
         
         .sheet(isPresented: $repaySheet) {
-            RepaySheet(showingSheet: $repaySheet)
+            RepaySheet(showingSheet: $repaySheet, person: personName)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
         
@@ -200,10 +228,10 @@ struct DetailView: View {
 
 
 struct ListItem: View {
-    @State var amount: Int
+    @State var amount: Int32
     @State var type: String
-    @State var note: String
-    @State var createdAt: String
+    @State var personalNote: String
+    //    @State var createdAt: String
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -212,7 +240,7 @@ struct ListItem: View {
                 Image (systemName: "eye.slash.fill").resizable().scaledToFit().frame(width: 14)
                 Text(type).font(.system(size: 14)).opacity(0.5)
             }
-            Text(note).font(.system(size: 14)).opacity(0.5)
+            Text(personalNote).font(.system(size: 14)).opacity(0.5)
         }
     }
 }
