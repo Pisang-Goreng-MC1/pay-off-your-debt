@@ -13,7 +13,6 @@ struct AddDebtDetailSheet: View {
     @State private var personalNote: String = ""
     @State private var repaymentDate: Date = Date()
     @State private var debtType: String = "Owe"
-    @Binding var showingAlert: Bool
     @Binding var showingSheet: Bool
     
     @Environment(\.managedObjectContext) private var viewContext
@@ -58,64 +57,58 @@ struct AddDebtDetailSheet: View {
     }
     
     var body: some View {
-        VStack {
-            List {
-                Section {
-                    Text(personName)
-                    TextField("IDR0.00", text: $amount)
-                        .keyboardType(.decimalPad)
-                    
-                    HStack {
-                        Text("Repayment Date")
-                        Spacer()
-                        DatePicker(
-                            "",
-                            selection: $repaymentDate,
-                            in: Date()...,
-                            displayedComponents: [.date]
-                        )
+        NavigationStack {
+            VStack {
+                List {
+                    Section {
+                        Text(personName)
+                        TextField("IDR0.00", text: $amount)
+                            .keyboardType(.decimalPad)
+                        
+                        HStack {
+                            Text("Repayment Date")
+                            Spacer()
+                            DatePicker(
+                                "",
+                                selection: $repaymentDate,
+                                in: Date()...,
+                                displayedComponents: [.date]
+                            )
+                        }
+                        TextField("Personal Note", text: $personalNote)
                     }
-                    TextField("Personal Note", text: $personalNote)
-                }
-                Section {
-                    HStack {
-                        Text("Type")
-                        Spacer()
-                        Picker("", selection: $debtType) {
-                            Text("Owe").tag("Owe")
-                            Text("Lent").tag("Lent")
+                    Section {
+                        HStack {
+                            Text("Type")
+                            Spacer()
+                            Picker("", selection: $debtType) {
+                                Text("Owe").tag("Owe")
+                                Text("Lent").tag("Lent")
+                            }
                         }
                     }
-                }
-                Section {
-                    Button {
-                        self.showingSheet.toggle()
-                        addDebt() // TODO:
+                    Section {
+                        Button {
+                            self.showingSheet.toggle()
+                            addDebt() // TODO:
+                        }
+                    label: {
+                        Text("Save")
+                            .frame(maxWidth: .infinity)
                     }
-                label: {
-                    Text("Save")
-                        .frame(maxWidth: .infinity)
+                    .disabled(isButtonDisabled())
+                    .listRowBackground(isButtonDisabled() ? Color.gray : Color.accentColor   )
+                    .foregroundColor(Color.white)
+                    }
+                    
                 }
-                .disabled(isButtonDisabled())
-                .listRowBackground(isButtonDisabled() ? Color.gray : Color.accentColor   )
-                .foregroundColor(Color.white)
-                }
-                
+                .scrollDisabled(true)
+                .scrollContentBackground(.hidden)
+                .navigationBarTitle("New Debt",displayMode: .inline)
             }
-            .scrollDisabled(true)
-            .scrollContentBackground(.hidden)
-            .alert(isPresented: self.$showingAlert) {
-                Alert(title: Text("Contact on Pressed!"), dismissButton: .default(Text("Dismiss")))
-            }
-            .navigationBarTitle("New Debt",displayMode: .inline)
-            .navigationBarItems(
-                leading:Button("Cancel", action: {
-                    self.showingSheet.toggle()
-                })
-            )
+            .background(Color(UIColor.systemGroupedBackground))
         }
-        .background(Color(UIColor.systemGroupedBackground))
-        .presentationDetents([.medium])
+        .presentationDetents([.fraction(0.6)])
         .presentationDragIndicator(.visible)
     }
 }

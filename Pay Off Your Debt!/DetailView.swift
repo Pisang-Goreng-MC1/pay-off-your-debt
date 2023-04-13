@@ -26,7 +26,6 @@ struct DetailView: View {
     
     var personName: String
     @State private var amount: String = ""
-    @State private var personalNotes: String = ""
     @State private var newDebtSheet: Bool = false
     @State private var repaySheet: Bool = false
     @State private var showingAlert: Bool = false
@@ -51,7 +50,7 @@ struct DetailView: View {
     @State private var selectedTab = 0
     
     var body: some View {
-        NavigationView{
+        NavigationStack{
             ZStack (alignment: .top){
                 Color("ColorMerah").ignoresSafeArea()
                 VStack{
@@ -67,29 +66,45 @@ struct DetailView: View {
                             .padding(.bottom, 20)
                         HStack(spacing: 40){
                             VStack{
-                                Circle()
-                                    .fill(.white)
-                                    .frame(height: 50)
-                                    .overlay {
-                                        Image(systemName: "plus")
-                                            .foregroundColor(.red)
+                                Button {
+                                    self.newDebtSheet.toggle()
+                                
+                                } label: {
+                                    VStack {
+                                        Circle()
+                                            .fill(.white)
+                                            .frame(height: 50)
+                                            .overlay {
+                                                Image(systemName: "plus")
+                                                    .foregroundColor(.red)
+                                            }
+                                        Text("New Debt")
+                                            .font(.system(size: 12))
+                                            .fontWeight(.bold)
                                     }
-                                Text("New Debt")
-                                    .font(.system(size: 12))
-                                    .fontWeight(.bold)
+                                }
+                                
                             }
                             
                             VStack{
-                                Circle()
-                                    .fill(.white)
-                                    .frame(height: 50)
-                                    .overlay {
-                                        Image(systemName: "banknote")
-                                            .foregroundColor(.red)
+                                Button {
+                                    self.repaySheet.toggle()
+                                
+                                } label: {
+                                    VStack {
+                                        Circle()
+                                            .fill(.white)
+                                            .frame(height: 50)
+                                            .overlay {
+                                                Image(systemName: "banknote")
+                                                    .foregroundColor(.red)
+                                            }
+                                        Text("Repay")
+                                            .font(.system(size: 12))
+                                            .fontWeight(.bold)
                                     }
-                                Text("Repay")
-                                    .font(.system(size: 12))
-                                    .fontWeight(.bold)
+                                }
+                                
                             }
                             
                         }.padding(.bottom, 8)
@@ -153,48 +168,13 @@ struct DetailView: View {
             }
 .navigationBarTitle("Monica", displayMode: .inline)
             .sheet(isPresented: $newDebtSheet) {
-                AddDebtDetailSheet(personName: personName, showingAlert: $showingAlert, showingSheet: $newDebtSheet)
+                AddDebtDetailSheet(personName: personName, showingSheet: $newDebtSheet)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             
             .sheet(isPresented: $repaySheet) {
-                VStack {
-                    List {
-                        Section {
-                            TextField("IDR0.00", text: $amount)
-                                .keyboardType(.decimalPad)
-                                .onReceive(Just(amount)) { newAmount in
-                                    print(newAmount)
-                                    let filtered = newAmount.filter {
-                                        "0123456789".contains($0)
-                                    }
-                                    print (filtered)
-                                    if filtered != newAmount {
-                                        self.amount = filtered
-                                    }
-                                
-                                }
-                            TextField("Personal Notes", text: $personalNotes)
-                            
-                        }
-                        Section {
-                            Button {
-                                self.repaySheet.toggle()
-                            
-                            } label: {
-                                Text("Repay")
-                                    .frame(maxWidth: .infinity)
-                            }
-                            // () ? true : false
-                            .listRowBackground(isButtonDisabled() ? Color.gray : Color.accentColor)
-                            .foregroundColor(Color.white)
-                            .disabled(isButtonDisabled())
-                        }
-                    }
-                }
-                .background(Color(UIColor.systemGroupedBackground))
-                .presentationDetents([.fraction(0.3)])
-                .presentationDragIndicator(.visible)
+                RepaySheet(showingSheet: $repaySheet)
+                    .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
             
         }

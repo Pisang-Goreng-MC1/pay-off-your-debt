@@ -39,7 +39,7 @@ struct HomeView: View {
                 VStack{
                     //Title and add button
                     HStack{
-                        Text("🙌Hi, Buddy!")
+                        Text("Hi, Buddy!")
                             .fontWeight(.medium)
                         Spacer()
                         Button{
@@ -55,17 +55,20 @@ struct HomeView: View {
                         .fontWeight(.medium)
                     HStack(alignment: .center){
                         Text(showSummary(totalAmount: summary, isMoneyShow: isSummaryShow))
-                            .fontWeight(.heavy)
+                            .fontWeight(.bold)
                         Image(systemName: isSummaryShow ? "eye.slash" : "eye.fill")
+                            .font(.system(size: 20))
                             .onTapGesture {
                                 isSummaryShow.toggle()
                             }
                     }
                     .font(.largeTitle)
+                    Spacer()
+                        .frame(height: 5)
                     Text(getMessagesByDebtType(label: getDebtTypeByAmount(totalAmount: summary)).first ?? "")
-                        .fontWeight(.light)
+                        .fontWeight(.regular)
                         .multilineTextAlignment(.center)
-                        .padding(.bottom, 60)
+                        .padding(.bottom, 50)
                         .padding(.horizontal, 20.0)
                 }
                 .foregroundColor(.white)
@@ -82,7 +85,7 @@ struct HomeView: View {
     
     //function show total money
     func showSummary(totalAmount: Int, isMoneyShow: Bool) -> String{
-        let stringMoney : String = "RP. \(String(abs(totalAmount)))"
+        let stringMoney : String = "RP\(String(abs(totalAmount)))"
         //formater to currency indonesia
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "id_ID")
@@ -90,7 +93,7 @@ struct HomeView: View {
         formatter.numberStyle = .decimal
         
         if isMoneyShow{
-            return ("RP. \(formatter.string(for: abs(totalAmount)) ?? "0")")
+            return ("RP\(formatter.string(for: abs(totalAmount)) ?? "0")")
         }else{
             return (stringToAsterisk(value: stringMoney))
             

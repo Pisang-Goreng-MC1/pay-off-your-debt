@@ -18,8 +18,8 @@ struct ListActiveDebts: View {
         VStack(alignment: .leading){
             Text("Active debts")
                 .font(.title2)
-                .fontWeight(.heavy)
-                .padding(.vertical, 20)
+                .fontWeight(.bold)
+                .padding(.vertical, 10)
                 .foregroundColor(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
             VStack{
