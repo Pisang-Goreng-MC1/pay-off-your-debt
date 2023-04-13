@@ -9,7 +9,9 @@ import SwiftUI
 import Combine
 
 struct AddDebtSheet: View {
-    @State private var person: String = ""
+    let persistenceController = PersistenceController.shared
+    
+    @State private var person: String = "Contact"
     @State private var amount: String = ""
     @State private var personalNote: String = ""
     @State private var repaymentDate: Date = Date()
@@ -19,30 +21,45 @@ struct AddDebtSheet: View {
     @Binding var showingSheet: Bool
     
     @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(
+        sortDescriptors: [],
+        animation: .default)
+    var wallets: FetchedResults<Wallet>
     
-    func addDebt() {
+    func addDebt()  {
         withAnimation {
             // TODO: kalo target person blm ada create baru, kalo dah ada langsung tambahin
+            
+            
             // TODO:  Kalo belum ada walletnya create baru. Kalo dah ada langsung tambahin debt di walletnya
             
-            let newWallet = Wallet(context: viewContext)
             let newDebt = Debt(context: viewContext)
-            let newPerson = Person(context: viewContext)
-            
-            newWallet.id = UUID()
-            newWallet.totalAmount = 10000 // TODO: integrate
-            
-            newPerson.id = UUID() //
-            newPerson.name = "ME" // TODO:
-            
             newDebt.id = UUID()
-            newDebt.amount = 20000 // TODO: Integrate
-            newDebt.personalNote = "note" // TODO: Integrate
-            newDebt.type = "owe" // TODO: Integrate
+            newDebt.amount = Int32(amount) ?? 0 // TODO: Integrate
+            newDebt.personalNote = personalNote // TODO: Integrate
+            newDebt.type = debtType // TODO: Integrate
             newDebt.repaymentDate = Date()
             
-            newWallet.person = newPerson
-            newWallet.debt = newDebt
+            if let existingWallet = wallets.first(where: { $0.person?.name ?? "" == person }) {
+
+                if var debts = existingWallet.mutableSetValue(forKey: "debts") as? Set<Debt> {
+                    debts.insert(newDebt)
+                    existingWallet.debts = debts as NSSet
+                }
+                
+            } else {
+                let newWallet = Wallet(context: viewContext)
+                let newPerson = Person(context: viewContext)
+
+                newWallet.id = UUID()
+                newWallet.totalAmount = Int32(amount) ?? 0
+                newPerson.id = UUID() //
+                newPerson.name = person // TODO:
+
+                newWallet.person = newPerson
+                newWallet.debts = [newDebt]
+            }
+            
             
             do {
                 try viewContext.save()
@@ -56,7 +73,7 @@ struct AddDebtSheet: View {
     }
     
     func isButtonDisabled() -> Bool{
-        return amount.isEmpty || person.isEmpty
+        return amount.isEmpty || person == "Contact"
     }
     
     var body: some View {
@@ -84,13 +101,11 @@ struct AddDebtSheet: View {
                         //                            let regex = try NSRegularExpression (pattern: "^[0-9]*$")
                         //                        })
                             .onReceive(Just(amount)) { newAmount in
-                                print(newAmount)
                                 //                            let regex = try NSRegularExpression (pattern: "^[0-9]*$")
                                 let filtered = newAmount.filter {
                                     //                                $0.contains(Regex("^[0-9]*$"))
                                     "0123456789".contains($0)
                                 }
-                                print (filtered)
                                 if filtered != newAmount {
                                     self.amount = filtered
                                     
@@ -142,6 +157,7 @@ struct AddDebtSheet: View {
                     leading:Button("Cancel", action: {
                         self.showingSheet.toggle()
                     })
+                    .foregroundColor(Color.accentColor)
                 )
             }
             .background(Color(UIColor.systemGroupedBackground))

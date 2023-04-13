@@ -14,10 +14,11 @@ func moneyFormater(amount: Int32) -> String{
     formatter.groupingSeparator = "."
     formatter.numberStyle = .decimal
     
-    return ("RP. \(formatter.string(for: amount) ?? "0")")
+    return ("Rp\(formatter.string(for: amount) ?? "0")")
 }
 
-func changeColorByTypeDebt(amount: Int) -> Color{
+func changeColorByTypeDebt(amount: Int32) -> Color{
+    print("This is amount \(amount)")
     return amount < 0 ? Color("SecondaryColor") : Color("PrimaryColor")
 }
 
@@ -45,7 +46,7 @@ func getMessagesByDebtType(label: String) -> [String] {
     return filteredMessages.map { $0.0 }
 }
 
-func getDebtTypeByAmount(totalAmount: Int) -> String {
+func getDebtTypeByAmount(totalAmount: Int32) -> String {
     if totalAmount < 0 {
         return "owe"
     } else if totalAmount > 0 {

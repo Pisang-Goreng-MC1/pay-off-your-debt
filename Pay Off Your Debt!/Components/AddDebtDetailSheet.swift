@@ -16,30 +16,50 @@ struct AddDebtDetailSheet: View {
     @Binding var showingSheet: Bool
     
     @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(
+        sortDescriptors: [],
+        animation: .default)
+    var wallets: FetchedResults<Wallet>
     
     func addDebt() {
         withAnimation {
             // TODO: kalo target person blm ada create baru, kalo dah ada langsung tambahin
             // TODO:  Kalo belum ada walletnya create baru. Kalo dah ada langsung tambahin debt di walletnya
             
-            let newWallet = Wallet(context: viewContext)
             let newDebt = Debt(context: viewContext)
-            let newPerson = Person(context: viewContext)
-            
-            newWallet.id = UUID()
-            newWallet.totalAmount = 10000 // TODO: integrate
-            
-            newPerson.id = UUID() //
-            newPerson.name = "ME" // TODO:
-            
             newDebt.id = UUID()
-            newDebt.amount = 20000 // TODO: Integrate
-            newDebt.personalNote = "note" // TODO: Integrate
-            newDebt.type = "owe" // TODO: Integrate
+            newDebt.amount = Int32(amount) ?? 0 // TODO: Integrate
+            newDebt.personalNote = personalNote // TODO: Integrate
+            newDebt.type = debtType // TODO: Integrate
             newDebt.repaymentDate = Date()
             
-            newWallet.person = newPerson
-            newWallet.debt = newDebt
+            if let existingWallet = wallets.first(where: { $0.person?.name ?? "" == personName }) {
+
+                if var debts = existingWallet.mutableSetValue(forKey: "debts") as? Set<Debt> {
+                    debts.insert(newDebt)
+                    existingWallet.debts = debts as NSSet
+                }
+                
+            }
+            
+//            let newWallet = Wallet(context: viewContext)
+//            let newDebt = Debt(context: viewContext)
+//            let newPerson = Person(context: viewContext)
+//
+//            newWallet.id = UUID()
+//            newWallet.totalAmount = 10000 // TODO: integrate
+//
+//            newPerson.id = UUID() //
+//            newPerson.name = "ME" // TODO:
+//
+//            newDebt.id = UUID()
+//            newDebt.amount = 20000 // TODO: Integrate
+//            newDebt.personalNote = "note" // TODO: Integrate
+//            newDebt.type = "owe" // TODO: Integrate
+//            newDebt.repaymentDate = Date()
+//
+//            newWallet.person = newPerson
+//            newWallet.debts = [newDebt]
             
             do {
                 try viewContext.save()

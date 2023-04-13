@@ -28,9 +28,16 @@ struct HomeView: View {
     
     
     @State private var isSummaryShow : Bool = true
-    @State private var summary : Int = 10000
     
     @Environment(\.managedObjectContext) private var viewContext
+    @FetchRequest(entity: Debt.entity(), sortDescriptors: []) var debts: FetchedResults<Debt>
+    
+    var totalSummary: Int32 {
+        debts.reduce(0) { result, item in
+            let amount = item.amount * (item.type == "Owe" ? -1 : 1)
+            return result + amount
+        }
+    }
     
     var body: some View {
         NavigationStack{
@@ -51,10 +58,10 @@ struct HomeView: View {
                     .padding(.all)
                     .font(.title2)
                     
-                    Text("You \(getDebtTypeByAmount(totalAmount: summary))")
+                    Text("You \(getDebtTypeByAmount(totalAmount: totalSummary))")
                         .fontWeight(.medium)
                     HStack(alignment: .center){
-                        Text(showSummary(totalAmount: summary, isMoneyShow: isSummaryShow))
+                        Text(showSummary(totalAmount: Int32(totalSummary), isMoneyShow: isSummaryShow))
                             .fontWeight(.bold)
                         Image(systemName: isSummaryShow ? "eye.slash" : "eye.fill")
                             .font(.system(size: 20))
@@ -65,27 +72,29 @@ struct HomeView: View {
                     .font(.largeTitle)
                     Spacer()
                         .frame(height: 5)
-                    Text(getMessagesByDebtType(label: getDebtTypeByAmount(totalAmount: summary)).first ?? "")
+                    Text(getMessagesByDebtType(label: getDebtTypeByAmount(totalAmount: totalSummary)).first ?? "")
                         .fontWeight(.regular)
                         .multilineTextAlignment(.center)
-                        .padding(.bottom, 50)
+                        .padding(.bottom, 40)
                         .padding(.horizontal, 20.0)
                 }
                 .foregroundColor(.white)
                 // Active Debt
                 ListActiveDebts()
             }
-            .background(changeColorByTypeDebt(amount: summary))
+            .background(changeColorByTypeDebt(amount: Int32(totalSummary)))
             .sheet(isPresented: $showingSheet) {
                 AddDebtSheet(showingContacts: $showingContacts, showingAlert: $showingAlert, showingSheet: $showingSheet)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
         }
+        //        .tint(Color.white)
+        .navigationBarTitleDisplayMode(.inline)
     }
     
     //function show total money
-    func showSummary(totalAmount: Int, isMoneyShow: Bool) -> String{
-        let stringMoney : String = "RP\(String(abs(totalAmount)))"
+    func showSummary(totalAmount: Int32, isMoneyShow: Bool) -> String{
+        let stringMoney : String = "Rp\(String(abs(totalAmount)))"
         //formater to currency indonesia
         let formatter = NumberFormatter()
         formatter.locale = Locale(identifier: "id_ID")
@@ -93,7 +102,7 @@ struct HomeView: View {
         formatter.numberStyle = .decimal
         
         if isMoneyShow{
-            return ("RP\(formatter.string(for: abs(totalAmount)) ?? "0")")
+            return ("Rp\(formatter.string(for: abs(totalAmount)) ?? "0")")
         }else{
             return (stringToAsterisk(value: stringMoney))
             
@@ -103,7 +112,7 @@ struct HomeView: View {
     
     //function convert to asterisk
     func stringToAsterisk(value : String) -> String{
-        return String(repeating: "*", count: value.count)
+        return String(repeating: "*", count: value.count + 2)
     }
     
     private func AddRepay() {
