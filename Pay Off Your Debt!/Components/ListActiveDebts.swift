@@ -19,22 +19,41 @@ struct ListActiveDebts: View {
             Text("Active debts")
                 .font(.title2)
                 .fontWeight(.bold)
-                .padding(.vertical, 10)
+                .padding(.all, 20)
                 .foregroundColor(.black)
                 .frame(maxWidth: .infinity, alignment: .leading)
             VStack{
                 List {
-                    ForEach(wallets, id: \.id) {
-                        wallet in DebtCard(personName: wallet.person?.name ?? "Unknown", type: "owe", totalAmount: wallet.totalAmount)
+//                    if let debts = wallets.debts?.allObjects as? [Debt] {
+//                        for debt in debts {
+//                            print("- \(debt)")
+//                        }
+//                    }
+                    ForEach(wallets, id: \.id) {wallet in
+                        let temp = wallet.debts?.reduce(0) { (accumulator, debt) in
+                            if let type = (debt as! Debt).type {
+                                if type == "Owe" {
+                                    return (accumulator ?? 0) - Int(((debt as! Debt).amount))
+                                } else {
+                                    return (accumulator ?? 0) + Int(((debt as! Debt).amount))
+                                }
+                            } else {
+                                return accumulator
+                            }
+                        } ?? 0
+
+                        DebtCard(personName: wallet.person?.name ?? "Unknown", totalAmount: Int32(temp))
                     }
                 }.listStyle(.plain)
             }
         }
-        .padding(.horizontal, 20)
+//        .padding(.horizontal, 20)
         .background(.white)
         .cornerRadius(24)
         .padding(.bottom, -50)
     }
+    
+
 }
 
 struct ListActiveDebts_Previews: PreviewProvider {
