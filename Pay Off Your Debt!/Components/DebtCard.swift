@@ -14,9 +14,9 @@ struct DebtCard: View {
     //    @State var createdAt: String // TODO:
     
     var body: some View {
-        NavigationLink(destination: DetailView()){
-            HStack(){
-                Text("Alexander MonMon")
+        NavigationLink(destination: DetailView(personName: personName)){
+            HStack(spacing: 60.0){
+                Text("\(personName)")
                     .bold()
                 Spacer()
                 VStack(){

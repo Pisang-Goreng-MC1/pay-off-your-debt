@@ -1,20 +1,18 @@
 //
-//  AddDebtSheet.swift
+//  AddDebtDetailSheet.swift
 //  Pay Off Your Debt!
 //
-//  Created by Muhammad Afif Maruf on 11/04/23.
+//  Created by Ziady Mubaraq on 12/04/23.
 //
 
 import SwiftUI
-import Combine
 
-struct AddDebtSheet: View {
-    @State private var person: String = ""
-    @State private var amount: String = ""
+struct AddDebtDetailSheet: View {
+    var personName: String
+    @State private var amount: String = "0"
     @State private var personalNote: String = ""
     @State private var repaymentDate: Date = Date()
     @State private var debtType: String = "Owe"
-    @Binding var showingContacts: Bool
     @Binding var showingAlert: Bool
     @Binding var showingSheet: Bool
     
@@ -56,46 +54,16 @@ struct AddDebtSheet: View {
     }
     
     func isButtonDisabled() -> Bool{
-        return amount.isEmpty || person.isEmpty
+        return amount.isEmpty
     }
     
     var body: some View {
         VStack {
             List {
                 Section {
-                    HStack {
-                        Text(person)
-                        Spacer()
-                        Label("Contact", systemImage: "plus.circle")
-                            .font(.title3)
-                            .labelStyle(.iconOnly)
-                    }
-                    .onTapGesture {
-                        showingContacts = true
-                    }
-                    .sheet(isPresented: $showingContacts) {
-                        ContactView(showingContact: $showingContacts, contact: $person)
-                    }
+                    Text(personName)
                     TextField("IDR0.00", text: $amount)
                         .keyboardType(.decimalPad)
-//                        .onChange(of: amount, perform: { newValue in
-//                            print(newValue)
-//                            let regex = try NSRegularExpression (pattern: "^[0-9]*$")
-//                        })
-                        .onReceive(Just(amount)) { newAmount in
-                            print(newAmount)
-//                            let regex = try NSRegularExpression (pattern: "^[0-9]*$")
-                            let filtered = newAmount.filter {
-//                                $0.contains(Regex("^[0-9]*$"))
-                                "0123456789".contains($0)
-                            }
-                            print (filtered)
-                            if filtered != newAmount {
-                                self.amount = filtered
-        
-                            }
-                        }
-                    
                     
                     HStack {
                         Text("Repayment Date")
@@ -147,7 +115,7 @@ struct AddDebtSheet: View {
             )
         }
         .background(Color(UIColor.systemGroupedBackground))
-        .presentationDetents([.large])
+        .presentationDetents([.medium])
         .presentationDragIndicator(.visible)
     }
 }
