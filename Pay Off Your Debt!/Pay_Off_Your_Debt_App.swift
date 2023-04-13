@@ -13,8 +13,8 @@ struct Pay_Off_Your_Debt_App: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeView()
-                .environment(\.managedObjectContext, persistenceController.container.viewContext)
+            DetailView()
+//                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

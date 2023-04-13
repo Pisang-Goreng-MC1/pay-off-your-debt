@@ -11,8 +11,15 @@ struct Loan {
     let createdAt: String;
 }
 
+struct Dummy {
+    let amount: Int
+}
+
+
+
 import SwiftUI
 import Combine
+
 
 struct DetailView: View {
     let persistenceController = PersistenceController.shared
@@ -33,51 +40,118 @@ struct DetailView: View {
         return amount.isEmpty
     }
     
+    @State private var dummys: [Dummy] = [
+        Dummy(amount: 10000)
+    ]
+    
+    
+    
+    
+    @State private var tabType = ["Debt", "Repay"]
+    @State private var selectedTab = 0
+    
     var body: some View {
         NavigationView{
-            VStack{
-                VStack {
-                    Text ("Your Recent Debtsssss")
-                    HStack {
-                        Text ("- Rp.1.000.000")
-                            .foregroundColor(.red)
-                            .font(.system(size: 25))
-                            .bold()
+            ZStack (alignment: .top){
+                Color("ColorMerah").ignoresSafeArea()
+                VStack{
+                    VStack{
+                        Text("You Owe")
+                            .font(.system(size: 16))
+                            .fontWeight(.bold)
+                        Text("RP10.000")
+                            .font(.system(size: 32))
+                            .fontWeight(.bold)
+                        Text("Check your friend's pocket or unfriend them!")
+                            .font(.system(size: 12))
+                            .padding(.bottom, 20)
+                        HStack(spacing: 40){
+                            VStack{
+                                Circle()
+                                    .fill(.white)
+                                    .frame(height: 50)
+                                    .overlay {
+                                        Image(systemName: "plus")
+                                            .foregroundColor(.red)
+                                    }
+                                Text("New Debt")
+                                    .font(.system(size: 12))
+                                    .fontWeight(.bold)
+                            }
+                            
+                            VStack{
+                                Circle()
+                                    .fill(.white)
+                                    .frame(height: 50)
+                                    .overlay {
+                                        Image(systemName: "banknote")
+                                            .foregroundColor(.red)
+                                    }
+                                Text("Repay")
+                                    .font(.system(size: 12))
+                                    .fontWeight(.bold)
+                            }
+                            
+                        }.padding(.bottom, 8)
                         
-                        Image (systemName: "eye.slash.fill")
+                        
                     }
-                    HStack {
-                        Button("New Debt"){
-                            self.newDebtSheet.toggle()
+
+                    .toolbar{
+                        ToolbarItem(placement: .navigationBarLeading){
+                            Image(systemName: "chevron.backward")
                         }
-                        .buttonStyle(.borderedProminent)
+                        ToolbarItem(placement: .principal){
+                            Text("ini tolong diubah dinamis")
+                        }
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    
+                    
+                    VStack(){
+                        Picker("What is", selection:
+                                $selectedTab){
+                            Text("Loan").tag(0)
+                            Text("Repay").tag(1)
+                            
+                            
+                            
+                        }
+                                .padding(30)
+                                .pickerStyle(.segmented)
+                                .frame(width: 250)
                         
-                        Button("Repay"){
-                            self.repaySheet.toggle()
+                        VStack {
+                            List {
+                                if selectedTab == 0 {
+                                    ForEach(loans, id: \.amount) {
+                                        loan in ListItem(amount: loan.amount, type: loan.type, note: loan.note, createdAt: loan.createdAt)
+                                    }
+                                } else {
+                                    ForEach(dummys, id: \.amount) {
+                                       dummy in  Text("sa")
+                                    }
+                                }
+                                
+                            }.listStyle(.plain)
                         }
-                        .buttonStyle(.borderedProminent)
                         
                     }
-                    Spacer()
-                        .frame(minHeight:35,maxHeight:35)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .padding(.horizontal, 20)
+                    .background(.white)
+                    .cornerRadius(24)
+                    .padding(.bottom, -50)
+                    .padding(.bottom)
+                    .frame(height: 500)
                 }
-                .padding(.all, 20.0)
+                
                 .frame(maxWidth: .infinity)
-                .background (Color("YellowBgt"))
-                
-                
-                VStack {
-                    List {
-                        ForEach(loans, id: \.amount) {
-                            loan in ListItem(amount: loan.amount, type: loan.type, note: loan.note, createdAt: loan.createdAt)
-                        }
-                        
-                    }.listStyle(.plain)
-                }
-                
+                .background(Color("ColorMerah"))
                 
             }
-            .navigationBarTitle("Monica", displayMode: .inline)
+.navigationBarTitle("Monica", displayMode: .inline)
             .sheet(isPresented: $newDebtSheet) {
                 AddDebtDetailSheet(personName: personName, showingAlert: $showingAlert, showingSheet: $newDebtSheet)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
@@ -124,8 +198,14 @@ struct DetailView: View {
             }
             
         }
+        
+        
     }
+    
 }
+
+
+
 
 struct ListItem: View {
     @State var amount: Int
@@ -144,6 +224,7 @@ struct ListItem: View {
         }
     }
 }
+
 
 //struct DetailView_Previews: PreviewProvider {
 //    static var previews: some View {
