@@ -14,15 +14,14 @@ func moneyFormater(amount: Int32) -> String{
     formatter.groupingSeparator = "."
     formatter.numberStyle = .decimal
     
-    return ("Rp\(formatter.string(for: amount) ?? "0")")
+    return ("Rp\(formatter.string(for: abs(amount)) ?? "0")")
 }
 
 func changeColorByTypeDebt(amount: Int32) -> Color{
-    print("This is amount \(amount)")
     return amount < 0 ? Color("SecondaryColor") : Color("PrimaryColor")
 }
 
-func getMessagesByDebtType(label: String) -> [String] {
+func getMessagesByDebtType(label: String) -> String {
     let messagesByDebtType = [
         ("Oh, congratulations. You've reached a new level of incompetence.", "owe"),
         ("Great job, genius. You've managed to make things worse.", "owe"),
@@ -39,11 +38,11 @@ func getMessagesByDebtType(label: String) -> [String] {
         ("Why did you install this app if you never use it? useless.", "neutral"),
         (">.<", "neutral"),
         ("Good morning aksjdbtywk", "neutral")
-    ]
+    ].shuffled()
     
     let filteredMessages = messagesByDebtType.filter { $0.1 == label }
-//    guard let message = filteredMessages.first?.0 else { return "" }
-    return filteredMessages.map { $0.0 }
+    let message = filteredMessages.first?.0 ?? ""
+    return message
 }
 
 func getDebtTypeByAmount(totalAmount: Int32) -> String {
@@ -54,6 +53,28 @@ func getDebtTypeByAmount(totalAmount: Int32) -> String {
     } else {
         return "neutral"
     }
+}
+
+func showSummary(totalAmount: Int32, isMoneyShow: Bool) -> String{
+    let stringMoney : String = "Rp\(String(abs(totalAmount)))"
+    //formater to currency indonesia
+    let formatter = NumberFormatter()
+    formatter.locale = Locale(identifier: "id_ID")
+    formatter.groupingSeparator = "."
+    formatter.numberStyle = .decimal
+    
+    if isMoneyShow{
+        return ("Rp\(formatter.string(for: abs(totalAmount)) ?? "0")")
+    }else{
+        return (stringToAsterisk(value: stringMoney))
+        
+    }
+    
+}
+
+//function convert to asterisk
+func stringToAsterisk(value : String) -> String{
+    return String(repeating: "*", count: value.count + 2)
 }
 
 

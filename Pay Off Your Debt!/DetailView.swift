@@ -4,19 +4,6 @@
 //
 //  Created by Roli Bernanda on 06/04/23.
 //
-struct Loan {
-    let amount: Int
-    let type: String;
-    let note: String;
-    let createdAt: String;
-}
-
-struct Dummy {
-    let amount: Int
-}
-
-
-
 import SwiftUI
 import Combine
 import CoreData
@@ -29,25 +16,17 @@ struct DetailView: View {
     @FetchRequest(entity: Debt.entity(), sortDescriptors: []) var debts: FetchedResults<Debt>
     
     
-    @Binding var personName: String
+    @State var personName: String
     @State private var amount: String = ""
     @State private var newDebtSheet: Bool = false
     @State private var repaySheet: Bool = false
     @State private var showingAlert: Bool = false
-    @State private var loans: [Loan] = [
-        Loan(amount: 10000, type: "Lent", note: "Kopi 1 Cangkir", createdAt: "21/01/01"),
-        Loan(amount: 20000, type: "Borrow", note: "Kopi 2 Cangkir", createdAt: "21/01/01"),
-        Loan(amount: 30000, type: "Borrow", note: "Kopi 3 Cangkir", createdAt: "21/01/01"),
-        Loan(amount: 40000, type: "Lent", note: "Kopi 4 Cangkir", createdAt: "21/01/01"),
-    ]
+    @State private var messageInDetail = ""
+    
     var totalAmount: Int32
     func isButtonDisabled() -> Bool{
         return amount.isEmpty
     }
-    
-    @State private var dummys: [Dummy] = [
-        Dummy(amount: 10000)
-    ]
     
     private func getListDebts () -> [Debt] {
         print("Running Debt")
@@ -55,16 +34,8 @@ struct DetailView: View {
     }
     
     private func getListRepay () -> [Debt] {
-        return debts.filter {
-            print($0.person?.name, "NAME dari person object")
-            print(personName, "Person Name")
-            return $0.person?.name == personName && $0.type == "Repay"
-        }
+        return debts.filter {$0.person?.name == personName && $0.type == "Repay"}
     }
-    
-    //    var listDebts = debts.filter {$0.name == personName}
-    
-    //    var repays: [Debt]
     
     private var backButton: some View {
         Button(action: {
@@ -97,7 +68,7 @@ struct DetailView: View {
                     Text("\(abs(totalAmount))")
                         .font(.system(size: 32))
                         .fontWeight(.bold)
-                    Text("Check your friend's pocket or unfriend them!")
+                    Text(messageInDetail)
                         .font(.system(size: 12))
                         .padding(.bottom, 20)
                     HStack(spacing: 40){
@@ -146,7 +117,7 @@ struct DetailView: View {
                             }
                         }
                         
-                       
+                        
                         
                     }.padding(.bottom, 24)
                     
@@ -165,6 +136,9 @@ struct DetailView: View {
                 //                    }
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
+                .onAppear{
+                    messageInDetail = getMessagesByDebtType(label: getDebtTypeByAmount(totalAmount: totalAmount))
+                }
                 
                 
                 VStack(){

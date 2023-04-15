@@ -39,6 +39,7 @@ struct AddDebtSheet: View {
             newDebt.personalNote = personalNote // TODO: Integrate
             newDebt.type = debtType // TODO: Integrate
             newDebt.repaymentDate = Date()
+            newDebt.createdAt = Date()
             
             if let existingWallet = wallets.first(where: { $0.person?.name ?? "" == person }) {
 

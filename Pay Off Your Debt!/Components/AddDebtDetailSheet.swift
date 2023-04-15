@@ -32,6 +32,7 @@ struct AddDebtDetailSheet: View {
             newDebt.personalNote = personalNote // TODO: Integrate
             newDebt.type = debtType // TODO: Integrate
             newDebt.repaymentDate = Date()
+            newDebt.createdAt = Date()
             
             if let existingWallet = wallets.first(where: { $0.person?.name ?? "" == personName }) {
 
@@ -42,25 +43,6 @@ struct AddDebtDetailSheet: View {
                 }
                 
             }
-            
-//            let newWallet = Wallet(context: viewContext)
-//            let newDebt = Debt(context: viewContext)
-//            let newPerson = Person(context: viewContext)
-//
-//            newWallet.id = UUID()
-//            newWallet.totalAmount = 10000 // TODO: integrate
-//
-//            newPerson.id = UUID() //
-//            newPerson.name = "ME" // TODO:
-//
-//            newDebt.id = UUID()
-//            newDebt.amount = 20000 // TODO: Integrate
-//            newDebt.personalNote = "note" // TODO: Integrate
-//            newDebt.type = "owe" // TODO: Integrate
-//            newDebt.repaymentDate = Date()
-//
-//            newWallet.person = newPerson
-//            newWallet.debts = [newDebt]
             
             do {
                 try viewContext.save()
