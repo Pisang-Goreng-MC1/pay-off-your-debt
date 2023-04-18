@@ -30,11 +30,11 @@ struct DetailView: View {
     
     private func getListDebts () -> [Debt] {
         print("Running Debt")
-        return debts.filter {$0.person?.name == personName && $0.type != "Repay"}
+        return debts.filter {$0.person?.name == personName && $0.type != "Repay"}.sorted { $0.createdAt ?? Date() > $1.createdAt ?? Date() }
     }
     
     private func getListRepay () -> [Debt] {
-        return debts.filter {$0.person?.name == personName && $0.type == "Repay"}
+        return debts.filter {$0.person?.name == personName && $0.type == "Repay"}.sorted { $0.createdAt ?? Date() > $1.createdAt ?? Date() }
     }
     
     private var backButton: some View {
@@ -68,9 +68,12 @@ struct DetailView: View {
                     Text("\(showSummary(totalAmount: totalAmount, isMoneyShow: true))")
                         .font(.system(size: 32))
                         .fontWeight(.bold)
+                        .padding(.bottom, 5)
                     Text(messageInDetail)
-                        .font(.system(size: 12))
-                        .padding(.bottom, 20)
+                        .fontWeight(.regular)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 20.0)
+                        .lineLimit(nil)
                     HStack(spacing: 40){
                         VStack{
                             Button {
@@ -83,8 +86,10 @@ struct DetailView: View {
                                         .frame(height: 50)
                                         .overlay {
                                             Image(systemName: "plus")
-                                                .foregroundColor(.red)
+                                                .foregroundColor(changeColorByTypeDebt(amount: Int32(totalAmount)))
+                                                .font(.system(size: 22))
                                         }
+                                        
                                     Text("New Debt")
                                         .font(.system(size: 12))
                                         .fontWeight(.bold)
@@ -105,8 +110,10 @@ struct DetailView: View {
                                             .frame(height: 50)
                                             .overlay {
                                                 Image(systemName: "banknote")
-                                                    .foregroundColor(.red)
+                                                    .foregroundColor(changeColorByTypeDebt(amount: Int32(totalAmount)))
+                                                    .font(.system(size: 22))
                                             }
+                                            
                                         Text("Repay")
                                             .font(.system(size: 12))
                                             .fontWeight(.bold)
@@ -119,7 +126,7 @@ struct DetailView: View {
                         
                         
                         
-                    }.padding(.bottom, 24)
+                    }.padding(.bottom, 20)
                     
                     
                 }
@@ -175,7 +182,6 @@ struct DetailView: View {
                 .background(.white)
                 .cornerRadius(24)
                 .padding(.bottom, -50)
-                .frame(height: 500)
             }
             
             .frame(maxWidth: .infinity)

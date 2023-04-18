@@ -54,6 +54,7 @@ struct DebtCard: View {
                         VStack(alignment: .trailing){
                             Text("\(moneyFormater(amount: totalAmount))")
                                 .foregroundColor((totalAmount < 0 ? .red : .green))
+                                .fontWeight(.bold)
 //                            Text("\(daysAgo(for: personName)) days ago")
 //                                .italic()// TODO
                         }

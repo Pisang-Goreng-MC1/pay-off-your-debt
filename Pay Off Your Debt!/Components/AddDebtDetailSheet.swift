@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct AddDebtDetailSheet: View {
     var personName: String
@@ -56,7 +57,7 @@ struct AddDebtDetailSheet: View {
     }
     
     func isButtonDisabled() -> Bool{
-        return amount.isEmpty
+        return amount.isEmpty || amount == "0"
     }
     
     var body: some View {
@@ -67,6 +68,17 @@ struct AddDebtDetailSheet: View {
                         Text(personName)
                         TextField("IDR0.00", text: $amount)
                             .keyboardType(.decimalPad)
+                            .onReceive(Just(amount)) { newAmount in
+                                //                            let regex = try NSRegularExpression (pattern: "^[0-9]*$")
+                                let filtered = newAmount.filter {
+                                    //                                $0.contains(Regex("^[0-9]*$"))
+                                    "0123456789".contains($0)
+                                }
+                                if filtered != newAmount {
+                                    self.amount = filtered
+                                    
+                                }
+                            }
                         
                         HStack {
                             Text("Repayment Date")
