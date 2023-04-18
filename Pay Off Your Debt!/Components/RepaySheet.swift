@@ -39,6 +39,7 @@ struct RepaySheet: View {
             newDebt.personalNote = personalNote
             newDebt.type = "Repay"
             newDebt.repaymentDate = Date()
+            newDebt.createdAt = Date()
             
             if let existingWallet = wallets.first(where: { $0.person?.name ?? "" == person }) {
 

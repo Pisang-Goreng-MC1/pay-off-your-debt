@@ -39,6 +39,7 @@ struct AddDebtSheet: View {
             newDebt.personalNote = personalNote // TODO: Integrate
             newDebt.type = debtType // TODO: Integrate
             newDebt.repaymentDate = Date()
+            newDebt.createdAt = Date()
             
             if let existingWallet = wallets.first(where: { $0.person?.name ?? "" == person }) {
 
@@ -76,7 +77,7 @@ struct AddDebtSheet: View {
     }
     
     func isButtonDisabled() -> Bool{
-        return amount.isEmpty || person == "Contact"
+        return amount.isEmpty || amount == "0" || person == "Contact"
     }
     
     var body: some View {

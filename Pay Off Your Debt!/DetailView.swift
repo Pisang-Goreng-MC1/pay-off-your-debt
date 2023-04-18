@@ -4,19 +4,6 @@
 //
 //  Created by Roli Bernanda on 06/04/23.
 //
-struct Loan {
-    let amount: Int
-    let type: String;
-    let note: String;
-    let createdAt: String;
-}
-
-struct Dummy {
-    let amount: Int
-}
-
-
-
 import SwiftUI
 import Combine
 import CoreData
@@ -29,42 +16,26 @@ struct DetailView: View {
     @FetchRequest(entity: Debt.entity(), sortDescriptors: []) var debts: FetchedResults<Debt>
     
     
-    @Binding var personName: String
+    @State var personName: String
     @State private var amount: String = ""
     @State private var newDebtSheet: Bool = false
     @State private var repaySheet: Bool = false
     @State private var showingAlert: Bool = false
-    @State private var loans: [Loan] = [
-        Loan(amount: 10000, type: "Lent", note: "Kopi 1 Cangkir", createdAt: "21/01/01"),
-        Loan(amount: 20000, type: "Borrow", note: "Kopi 2 Cangkir", createdAt: "21/01/01"),
-        Loan(amount: 30000, type: "Borrow", note: "Kopi 3 Cangkir", createdAt: "21/01/01"),
-        Loan(amount: 40000, type: "Lent", note: "Kopi 4 Cangkir", createdAt: "21/01/01"),
-    ]
+    @State private var messageInDetail = ""
+    
     var totalAmount: Int32
     func isButtonDisabled() -> Bool{
         return amount.isEmpty
     }
     
-    @State private var dummys: [Dummy] = [
-        Dummy(amount: 10000)
-    ]
-    
     private func getListDebts () -> [Debt] {
         print("Running Debt")
-        return debts.filter {$0.person?.name == personName && $0.type != "Repay"}
+        return debts.filter {$0.person?.name == personName && $0.type != "Repay"}.sorted { $0.createdAt ?? Date() > $1.createdAt ?? Date() }
     }
     
     private func getListRepay () -> [Debt] {
-        return debts.filter {
-            print($0.person?.name, "NAME dari person object")
-            print(personName, "Person Name")
-            return $0.person?.name == personName && $0.type == "Repay"
-        }
+        return debts.filter {$0.person?.name == personName && $0.type == "Repay"}.sorted { $0.createdAt ?? Date() > $1.createdAt ?? Date() }
     }
-    
-    //    var listDebts = debts.filter {$0.name == personName}
-    
-    //    var repays: [Debt]
     
     private var backButton: some View {
         Button(action: {
@@ -91,15 +62,18 @@ struct DetailView: View {
             changeColorByTypeDebt(amount: totalAmount).ignoresSafeArea()
             VStack{
                 VStack{
-                    Text("You Owe \(personName)")
+                    Text("You \(getDebtTypeByAmount(totalAmount: totalAmount)) \(personName)")
                         .font(.system(size: 16))
                         .fontWeight(.bold)
-                    Text("\(abs(totalAmount))")
+                    Text("\(showSummary(totalAmount: totalAmount, isMoneyShow: true))")
                         .font(.system(size: 32))
                         .fontWeight(.bold)
-                    Text("Check your friend's pocket or unfriend them!")
-                        .font(.system(size: 12))
-                        .padding(.bottom, 20)
+                        .padding(.bottom, 5)
+                    Text(messageInDetail)
+                        .fontWeight(.regular)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 20.0)
+                        .lineLimit(nil)
                     HStack(spacing: 40){
                         VStack{
                             Button {
@@ -112,8 +86,10 @@ struct DetailView: View {
                                         .frame(height: 50)
                                         .overlay {
                                             Image(systemName: "plus")
-                                                .foregroundColor(.red)
+                                                .foregroundColor(changeColorByTypeDebt(amount: Int32(totalAmount)))
+                                                .font(.system(size: 22))
                                         }
+                                        
                                     Text("New Debt")
                                         .font(.system(size: 12))
                                         .fontWeight(.bold)
@@ -134,8 +110,10 @@ struct DetailView: View {
                                             .frame(height: 50)
                                             .overlay {
                                                 Image(systemName: "banknote")
-                                                    .foregroundColor(.red)
+                                                    .foregroundColor(changeColorByTypeDebt(amount: Int32(totalAmount)))
+                                                    .font(.system(size: 22))
                                             }
+                                            
                                         Text("Repay")
                                             .font(.system(size: 12))
                                             .fontWeight(.bold)
@@ -146,9 +124,9 @@ struct DetailView: View {
                             }
                         }
                         
-                       
                         
-                    }.padding(.bottom, 24)
+                        
+                    }.padding(.bottom, 20)
                     
                     
                 }
@@ -165,6 +143,9 @@ struct DetailView: View {
                 //                    }
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
+                .onAppear{
+                    messageInDetail = getMessagesByDebtType(label: getDebtTypeByAmount(totalAmount: totalAmount))
+                }
                 
                 
                 VStack(){
@@ -201,7 +182,6 @@ struct DetailView: View {
                 .background(.white)
                 .cornerRadius(24)
                 .padding(.bottom, -50)
-                .frame(height: 500)
             }
             
             .frame(maxWidth: .infinity)
@@ -235,9 +215,9 @@ struct ListItem: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text ("I Owe Rp \(amount)")
+            Text ("I \(type) Rp \(amount)")
             HStack(spacing: 5) {
-                Image (systemName: "eye.slash.fill").resizable().scaledToFit().frame(width: 14)
+                Image (systemName: type == "Owe" ? "arrow.down" : "arrow.up").resizable().scaledToFit().frame(width: 14).foregroundColor(type == "Owe" ? Color.red : Color.green)
                 Text(type).font(.system(size: 14)).opacity(0.5)
             }
             Text(personalNote).font(.system(size: 14)).opacity(0.5)

@@ -10,6 +10,7 @@ import CoreData
 
 struct ListActiveDebts: View {
     @FetchRequest(
+        entity: Wallet.entity(),
         sortDescriptors: [],
         animation: .default)
     private var wallets: FetchedResults<Wallet>
@@ -24,11 +25,6 @@ struct ListActiveDebts: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             VStack{
                 List {
-//                    if let debts = wallets.debts?.allObjects as? [Debt] {
-//                        for debt in debts {
-//                            print("- \(debt)")
-//                        }
-//                    }
                     ForEach(wallets, id: \.id) {wallet in
                         let temp = wallet.debts?.reduce(0) { (accumulator, debt) in
                             if let type = (debt as! Debt).type {
@@ -41,19 +37,19 @@ struct ListActiveDebts: View {
                                 return accumulator
                             }
                         } ?? 0
-
+                        
                         DebtCard(personName: wallet.person?.name ?? "Unknown", totalAmount: Int32(temp))
                     }
                 }.listStyle(.plain)
             }
         }
-//        .padding(.horizontal, 20)
+        //        .padding(.horizontal, 20)
         .background(.white)
         .cornerRadius(24)
         .padding(.bottom, -50)
     }
     
-
+    
 }
 
 struct ListActiveDebts_Previews: PreviewProvider {

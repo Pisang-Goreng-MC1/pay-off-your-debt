@@ -25,9 +25,8 @@ struct HomeView: View {
     @State private var showingSheet: Bool = false
     @State private var showingAlert: Bool = false
     @State private var showingContacts: Bool = false
-    
-    
     @State private var isSummaryShow : Bool = true
+    @State private var messageInSummary = ""
     
     @Environment(\.managedObjectContext) private var viewContext
     @FetchRequest(entity: Debt.entity(), sortDescriptors: []) var debts: FetchedResults<Debt>
@@ -72,7 +71,7 @@ struct HomeView: View {
                     .font(.largeTitle)
                     Spacer()
                         .frame(height: 5)
-                    Text(getMessagesByDebtType(label: getDebtTypeByAmount(totalAmount: totalSummary)).first ?? "")
+                    Text(messageInSummary)
                         .fontWeight(.regular)
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 40)
@@ -87,37 +86,16 @@ struct HomeView: View {
                 AddDebtSheet(showingContacts: $showingContacts, showingAlert: $showingAlert, showingSheet: $showingSheet)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
             }
+            .onAppear{
+                messageInSummary = getMessagesByDebtType(label: getDebtTypeByAmount(totalAmount: totalSummary))
+            }
         }
         //        .tint(Color.white)
         .navigationBarTitleDisplayMode(.inline)
     }
     
     //function show total money
-    func showSummary(totalAmount: Int32, isMoneyShow: Bool) -> String{
-        let stringMoney : String = "Rp\(String(abs(totalAmount)))"
-        //formater to currency indonesia
-        let formatter = NumberFormatter()
-        formatter.locale = Locale(identifier: "id_ID")
-        formatter.groupingSeparator = "."
-        formatter.numberStyle = .decimal
-        
-        if isMoneyShow{
-            return ("Rp\(formatter.string(for: abs(totalAmount)) ?? "0")")
-        }else{
-            return (stringToAsterisk(value: stringMoney))
-            
-        }
-        
-    }
     
-    //function convert to asterisk
-    func stringToAsterisk(value : String) -> String{
-        return String(repeating: "*", count: value.count + 2)
-    }
-    
-    private func AddRepay() {
-        // TODO:
-    }
 }
 
 //
