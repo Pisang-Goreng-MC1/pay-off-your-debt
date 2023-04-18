@@ -62,10 +62,10 @@ struct DetailView: View {
             changeColorByTypeDebt(amount: totalAmount).ignoresSafeArea()
             VStack{
                 VStack{
-                    Text("You Owe \(personName)")
+                    Text("You \(getDebtTypeByAmount(totalAmount: totalAmount)) \(personName)")
                         .font(.system(size: 16))
                         .fontWeight(.bold)
-                    Text("\(abs(totalAmount))")
+                    Text("\(showSummary(totalAmount: totalAmount, isMoneyShow: true))")
                         .font(.system(size: 32))
                         .fontWeight(.bold)
                     Text(messageInDetail)
@@ -209,9 +209,9 @@ struct ListItem: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text ("I Owe Rp \(amount)")
+            Text ("I \(type) Rp \(amount)")
             HStack(spacing: 5) {
-                Image (systemName: "eye.slash.fill").resizable().scaledToFit().frame(width: 14)
+                Image (systemName: type == "Owe" ? "arrow.down" : "arrow.up").resizable().scaledToFit().frame(width: 14).foregroundColor(type == "Owe" ? Color.red : Color.green)
                 Text(type).font(.system(size: 14)).opacity(0.5)
             }
             Text(personalNote).font(.system(size: 14)).opacity(0.5)

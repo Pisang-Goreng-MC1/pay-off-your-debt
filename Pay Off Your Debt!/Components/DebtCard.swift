@@ -18,28 +18,29 @@ struct DebtCard: View {
     var totalAmount: Int32
     
     //function to get days ago from descending
-    func daysAgo(for personName: String) -> Int {
-        let request = NSFetchRequest<Debt>(entityName: "Debt")
-        request.sortDescriptors = [NSSortDescriptor(keyPath: \Debt.createdAt, ascending: false)]
-        request.fetchLimit = 1
-        request.predicate = NSPredicate(format: "person.name == %@ AND type IN %@",
-                                        personName, ["Owe", "Lent"])
-        
-        do {
-            let results = try viewContext.fetch(request)
-            if let latestDebt = results.first, let createdAt = latestDebt.createdAt {
-                let calendar = Calendar.current
-                let today = calendar.startOfDay(for: Date())
-                let createdAtDay = calendar.startOfDay(for: createdAt)
-                let components = calendar.dateComponents([.day], from: createdAtDay, to: today)
-                return components.day ?? 0
-            }
-        } catch {
-            // handle error
-        }
-        
-        return 0 // default value
-    }
+//    func daysAgo(for personName: String) -> Int {
+//        let request = NSFetchRequest<Debt>(entityName: "Debt")
+//        request.sortDescriptors = [NSSortDescriptor(keyPath: \Debt.createdAt, ascending: false)]
+//        request.fetchLimit = 1
+//        request.predicate = NSPredicate(format: "person.name == %@ AND type IN %@",
+//                                        personName, ["Owe", "Lent"])
+//
+//        do {
+//            let results = try viewContext.fetch(request)
+//            if let latestDebt = results.first, let createdAt = latestDebt.createdAt {
+//                let calendar = Calendar.current
+//                let today = calendar.startOfDay(for: Date())
+//                let createdAtDay = calendar.startOfDay(for: createdAt)
+//                let components = calendar.dateComponents([.day], from: createdAtDay, to: today)
+//
+//                return components.day ?? 0
+//            }
+//        } catch {
+//            // handle error
+//        }
+//
+//        return 0 // default value
+//    }
     
     var body: some View {
         NavigationLink(destination: DetailView(personName: personName, totalAmount: totalAmount).environment(\.managedObjectContext, persistenceController.container.viewContext)){
@@ -53,8 +54,8 @@ struct DebtCard: View {
                         VStack(alignment: .trailing){
                             Text("\(moneyFormater(amount: totalAmount))")
                                 .foregroundColor((totalAmount < 0 ? .red : .green))
-                            Text("\(daysAgo(for: personName)) days ago")
-                                .italic()// TODO
+//                            Text("\(daysAgo(for: personName)) days ago")
+//                                .italic()// TODO
                         }
                     }
                 }
