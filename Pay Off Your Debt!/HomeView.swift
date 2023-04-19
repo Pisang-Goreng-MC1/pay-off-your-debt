@@ -95,7 +95,7 @@ struct HomeView: View {
             }
         }
         
-        .opacity(showingSheet ? 0.1 : 1)
+        .overlay(showingSheet ? Color.black.opacity(0.5) : Color.black.opacity(0))
         //        .tint(Color.white)
         .navigationBarTitleDisplayMode(.inline)
     }
