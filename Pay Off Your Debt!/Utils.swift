@@ -18,6 +18,7 @@ func moneyFormater(amount: Int32) -> String{
 }
 
 func changeColorByTypeDebt(amount: Int32) -> Color{
+
     return amount < 0 ? Color("SecondaryColor") : Color("PrimaryColor")
 }
 

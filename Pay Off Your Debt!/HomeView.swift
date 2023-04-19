@@ -87,10 +87,15 @@ struct HomeView: View {
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .environment(\.colorScheme, .light)
             }
+            .onChange(of: totalSummary) { _ in
+                messageInSummary = getMessagesByDebtType(label: getDebtTypeByAmount(totalAmount: totalSummary))
+            }
             .onAppear{
                 messageInSummary = getMessagesByDebtType(label: getDebtTypeByAmount(totalAmount: totalSummary))
             }
         }
+        
+        .opacity(showingSheet ? 0.1 : 1)
         //        .tint(Color.white)
         .navigationBarTitleDisplayMode(.inline)
     }

@@ -22,6 +22,7 @@ struct DetailView: View {
     @State private var repaySheet: Bool = false
     @State private var showingAlert: Bool = false
     @State private var messageInDetail = ""
+    @State private var isDebt = true
     
     var totalAmount: Int32
     func isButtonDisabled() -> Bool{
@@ -165,11 +166,11 @@ struct DetailView: View {
                         List {
                             if selectedTab == 0 {
                                 ForEach(getListDebts(), id: \.id) {
-                                    debt in ListItem(amount: debt.amount, type: debt.type ?? "", personalNote: debt.personalNote ?? "")
+                                    debt in ListItem(amount: debt.amount, type: debt.type ?? "", personalNote: debt.personalNote == "" ? debt.personalNote ?? "-" : "-")
                                 }
                             } else {
                                 ForEach(getListRepay(), id: \.id) {
-                                    repay in ListItem(amount: repay.amount, type: repay.type ?? "", personalNote: repay.personalNote ?? "")
+                                    repay in ListItem(amount: repay.amount, type: repay.type ?? "", personalNote: repay.personalNote ?? "-")
                                 }
                             }
                             
