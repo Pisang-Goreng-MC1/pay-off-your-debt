@@ -90,7 +90,7 @@ struct DetailView: View {
                                                 .foregroundColor(changeColorByTypeDebt(amount: Int32(totalAmount)))
                                                 .font(.system(size: 22))
                                         }
-                                        
+                                    
                                     Text("New Debt")
                                         .font(.system(size: 12))
                                         .fontWeight(.bold)
@@ -114,7 +114,7 @@ struct DetailView: View {
                                                     .foregroundColor(changeColorByTypeDebt(amount: Int32(totalAmount)))
                                                     .font(.system(size: 22))
                                             }
-                                            
+                                        
                                         Text("Repay")
                                             .font(.system(size: 12))
                                             .fontWeight(.bold)
@@ -166,11 +166,11 @@ struct DetailView: View {
                         List {
                             if selectedTab == 0 {
                                 ForEach(getListDebts(), id: \.id) {
-                                    debt in ListItem(amount: debt.amount, type: debt.type ?? "", personalNote: debt.personalNote == "" ? debt.personalNote ?? "-" : "-")
+                                    debt in ListItem(amount: debt.amount, type: debt.type ?? "", personalNote: debt.personalNote == "" ? "-": debt.personalNote ?? "-" )
                                 }
                             } else {
                                 ForEach(getListRepay(), id: \.id) {
-                                    repay in ListItem(amount: repay.amount, type: repay.type ?? "", personalNote: repay.personalNote ?? "-")
+                                    repay in ListItem(amount: repay.amount, type: repay.type ?? "", personalNote: repay.personalNote == "" ? "-" : repay.personalNote ?? "-")
                                 }
                             }
                             
