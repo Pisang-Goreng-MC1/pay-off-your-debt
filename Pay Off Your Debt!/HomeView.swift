@@ -94,10 +94,9 @@ struct HomeView: View {
                 messageInSummary = getMessagesByDebtType(label: getDebtTypeByAmount(totalAmount: totalSummary))
             }
         }
-        
-        .opacity(showingSheet ? 0.1 : 1)
-        //        .tint(Color.white)
+        .overlay(showingSheet ? Color.black.opacity(0.5) : Color.black.opacity(0))
         .navigationBarTitleDisplayMode(.inline)
+        
     }
     
     //function show total money

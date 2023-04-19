@@ -15,31 +15,88 @@ struct ContactView: View {
     @State var selectionContact: String = "Person 1"
     @State private var contacts: [CNContact] = []
     
+    @State private var searchText = ""
+    @State private var showCancelButton: Bool = false
+    
     var body: some View {
         NavigationStack {
-            //contact get name and grouping by alphabet + show in 
-            List {
-                ForEach(groupedContacts, id: \.key) { key, values in
-                                    Section(header: Text(key).font(.system(size: 12))) {
-                                        ForEach(values, id: \.self) { singleContact in
-                                            ExtractedView(contact: $contact, showingContact: $showingContact, name: singleContact.givenName)
-                                        }
+            //contact get name and grouping by alphabet + show in
+            VStack{
+                HStack {
+                        HStack {
+                           //search bar magnifying glass image
+                           Image(systemName: "magnifyingglass").foregroundColor(.secondary)
+                                    
+                           //search bar text field
+                           TextField("search", text: self.$searchText, onEditingChanged: { isEditing in
+                           self.showCancelButton = true
+                           })
+                           
+                           // x Button
+                           Button(action: {
+                               self.searchText = ""
+                           }) {
+                               Image(systemName: "xmark.circle.fill")
+                                    .foregroundColor(.secondary)
+                                      .opacity(self.searchText == "" ? 0 : 1)
+                              }
+                    }
+                     .padding(8)
+                     .background(Color(.secondarySystemBackground))
+                     .cornerRadius(8)
+                                
+                      // Cancel Button
+                      if self.showCancelButton  {
+                          Button("Cancel") {
+                             UIApplication.shared.endEditing(true)
+                             self.searchText = ""
+                             self.showCancelButton = false
+                       }
+                     }
+                   }
+                    .padding([.leading, .trailing,.top])
+                
+                List {
+                    ForEach(groupedContacts, id: \.key) { key, values in
+                                        Section(header: Text(key).font(.system(size: 12))) {
+                                            ForEach(values, id: \.self) { singleContact in
+                                                if self.searchText.isEmpty || singleContact.givenName.localizedCaseInsensitiveContains(self.searchText) {
+                                                    ExtractedView(contact: $contact, showingContact: $showingContact, name: singleContact.givenName)
+                                                }
+                                            }
+                        }
                     }
                 }
-            }
-            .onAppear{
-                Task.init{
-                    await fetchContacts()
+                
+                
+//                List {
+//                               ForEach (self.contacts.filter({ (cont) -> Bool in
+//                                   self.searchText.isEmpty ? true :
+//                                       "\(cont)".lowercased().contains(self.searchText.lowercased())
+//                               })) { contact in
+//                                   ContactRow(contact: contact)
+//                               }
+//                           }.onAppear() {
+//                               self.requestAccess()
+//                           }
+                
+                
+                
+                .onAppear{
+                    Task.init{
+                        await fetchContacts()
+                    }
                 }
+                .listStyle(.plain)
+                .navigationBarTitle("Contacts",displayMode: .automatic)
+                .navigationBarItems(
+                    leading:Button("Back", action: {
+                        print("Button Clicked")
+                        showingContact = false
+                    })
+                )
             }
-            .listStyle(.plain)
-            .navigationBarTitle("Contacts",displayMode: .automatic)
-            .navigationBarItems(
-                leading:Button("Back", action: {
-                    print("Button Clicked")
-                    showingContact = false
-                })
-            )
+            
         }
         .presentationDetents([.large])
         .presentationDragIndicator(.visible)
@@ -47,11 +104,15 @@ struct ContactView: View {
     }
     
     var groupedContacts: [(key: String, values: [CNContact])] {
-            Dictionary(grouping: contacts, by: { String($0.givenName.prefix(1)).uppercased() })
+        let filteredContacts = contacts.filter { contact in
+                searchText.isEmpty || contact.givenName.localizedCaseInsensitiveContains(searchText)
+            }
+            
+            return Dictionary(grouping: filteredContacts, by: { String($0.givenName.prefix(1)).uppercased() })
                 .sorted(by: { $0.key < $1.key })
                 .map { key, values in
-                                (key: key, values: values)
-                            }
+                    (key: key, values: values)
+                }
         }
     
     func fetchContacts() async{
@@ -81,8 +142,11 @@ struct ExtractedView: View {
     @Binding var contact: String
     @Binding var showingContact: Bool
     var name: String
+    
+    
     var body: some View {
             VStack {
+                
                 Text(name)
             
         }
@@ -90,5 +154,14 @@ struct ExtractedView: View {
             contact = name
             showingContact = false
         }
+    }
+}
+
+extension UIApplication {
+    func endEditing(_ force: Bool) {
+        self.windows
+            .filter{$0.isKeyWindow}
+            .first?
+            .endEditing(force)
     }
 }
