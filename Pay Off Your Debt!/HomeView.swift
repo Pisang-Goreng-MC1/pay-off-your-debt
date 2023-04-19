@@ -97,7 +97,9 @@ struct HomeView: View {
         
         .overlay(showingSheet ? Color.black.opacity(0.5) : Color.black.opacity(0))
         //        .tint(Color.white)
+
         .navigationBarTitleDisplayMode(.inline)
+        
     }
     
     //function show total money
