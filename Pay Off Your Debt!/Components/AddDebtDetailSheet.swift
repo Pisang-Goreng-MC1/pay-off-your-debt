@@ -10,7 +10,7 @@ import Combine
 
 struct AddDebtDetailSheet: View {
     var personName: String
-    @State private var amount: String = "0"
+    @State private var amount: String = ""
     @State private var personalNote: String = ""
     @State private var repaymentDate: Date = Date()
     @State private var debtType: String = "Owe"
@@ -30,7 +30,7 @@ struct AddDebtDetailSheet: View {
             let newDebt = Debt(context: viewContext)
             newDebt.id = UUID()
             newDebt.amount = Int32(amount) ?? 0 // TODO: Integrate
-            newDebt.personalNote = personalNote // TODO: Integrate
+            newDebt.personalNote = personalNote  // TODO: Integrate
             newDebt.type = debtType // TODO: Integrate
             newDebt.repaymentDate = Date()
             newDebt.createdAt = Date()
@@ -80,16 +80,17 @@ struct AddDebtDetailSheet: View {
                                 }
                             }
                         
-                        HStack {
-                            Text("Repayment Date")
-                            Spacer()
-                            DatePicker(
-                                "",
-                                selection: $repaymentDate,
-                                in: Date()...,
-                                displayedComponents: [.date]
-                            )
-                        }
+                        //TODO : Repayment Date
+//                        HStack {
+//                            Text("Repayment Date")
+//                            Spacer()
+//                            DatePicker(
+//                                "",
+//                                selection: $repaymentDate,
+//                                in: Date()...,
+//                                displayedComponents: [.date]
+//                            )
+//                        }
                         TextField("Personal Note", text: $personalNote)
                     }
                     Section {

@@ -116,17 +116,18 @@ struct AddDebtSheet: View {
                                 }
                             }
                         
+                        //TODO: repayment date
                         
-                        HStack {
-                            Text("Repayment Date")
-                            Spacer()
-                            DatePicker(
-                                "",
-                                selection: $repaymentDate,
-                                in: Date()...,
-                                displayedComponents: [.date]
-                            )
-                        }
+//                        HStack {
+//                            Text("Repayment Date")
+//                            Spacer()
+//                            DatePicker(
+//                                "",
+//                                selection: $repaymentDate,
+//                                in: Date()...,
+//                                displayedComponents: [.date]
+//                            )
+//                        }
                         TextField("Personal Note", text: $personalNote)
                     }
                     Section {
@@ -166,7 +167,7 @@ struct AddDebtSheet: View {
             }
             .background(Color(UIColor.systemGroupedBackground))
         }
-        .presentationDetents([.large])
+        .presentationDetents([.medium])
         .presentationDragIndicator(.visible)
         
     }

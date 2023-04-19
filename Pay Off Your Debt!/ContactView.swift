@@ -17,10 +17,14 @@ struct ContactView: View {
     
     var body: some View {
         NavigationStack {
-            //contact get name
+            //contact get name and grouping by alphabet + show in 
             List {
-                ForEach(contacts, id: \.self){ singleContact in
-                    ExtractedView(contact: $contact, showingContact: $showingContact, name: singleContact.givenName)
+                ForEach(groupedContacts, id: \.key) { key, values in
+                                    Section(header: Text(key).font(.system(size: 12))) {
+                                        ForEach(values, id: \.self) { singleContact in
+                                            ExtractedView(contact: $contact, showingContact: $showingContact, name: singleContact.givenName)
+                                        }
+                    }
                 }
             }
             .onAppear{
@@ -42,6 +46,14 @@ struct ContactView: View {
         
     }
     
+    var groupedContacts: [(key: String, values: [CNContact])] {
+            Dictionary(grouping: contacts, by: { String($0.givenName.prefix(1)).uppercased() })
+                .sorted(by: { $0.key < $1.key })
+                .map { key, values in
+                                (key: key, values: values)
+                            }
+        }
+    
     func fetchContacts() async{
         let keys = [CNContactGivenNameKey, CNContactFamilyNameKey, CNContactPhoneNumbersKey]
         let request = CNContactFetchRequest(keysToFetch: keys as [CNKeyDescriptor])
@@ -49,22 +61,14 @@ struct ContactView: View {
         do {
             try CNContactStore().enumerateContacts(with: request) { contact, stop in
                 self.contacts.append(contact)
+                self.contacts.sort { $0.givenName.lowercased() < $1.givenName.lowercased() }
             }
         } catch {
             print("Error fetching contacts: \(error.localizedDescription)")
         }
     }
     
-    struct roundedCorner: Shape {
-        var radius: CGFloat = .infinity
-        var corners: UIRectCorner = .allCorners
-        
-        func path(in rect: CGRect) -> Path {
-            let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
-            
-            return Path(path.cgPath)
-        }
-    }
+
 }
 
 //struct ContactView_Previews: PreviewProvider {
@@ -78,15 +82,9 @@ struct ExtractedView: View {
     @Binding var showingContact: Bool
     var name: String
     var body: some View {
-        HStack {
-            Image(systemName: "person.fill")
-                .frame(width: 32, height: 32)
-                .background(Color(UIColor.systemGroupedBackground))
-                .clipShape(Circle())
-                .foregroundColor(Color.accentColor)
             VStack {
                 Text(name)
-            }
+            
         }
         .onTapGesture {
             contact = name
