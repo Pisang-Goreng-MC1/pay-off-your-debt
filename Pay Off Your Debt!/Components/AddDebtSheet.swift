@@ -96,7 +96,7 @@ struct AddDebtSheet: View {
                             showingContacts = true
                         }
                         .sheet(isPresented: $showingContacts) {
-                            ContactView(showingContact: $showingContacts, contact: $person)
+                            ContactView(showingContact: $showingContacts, contact: $person).environment(\.colorScheme, .light)
                         }
                         TextField("IDR0.00", text: $amount)
                             .keyboardType(.decimalPad)

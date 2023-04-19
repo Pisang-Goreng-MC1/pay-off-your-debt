@@ -15,7 +15,9 @@ struct Pay_Off_Your_Debt_App: App {
         WindowGroup {
             HomeView()
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .preferredColorScheme(.light)
         }
+        
     }
 }
 

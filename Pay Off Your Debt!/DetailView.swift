@@ -191,11 +191,13 @@ struct DetailView: View {
         .sheet(isPresented: $newDebtSheet) {
             AddDebtDetailSheet(personName: personName, showingSheet: $newDebtSheet)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environment(\.colorScheme, .light)
         }
         
         .sheet(isPresented: $repaySheet) {
             RepaySheet(showingSheet: $repaySheet, person: personName)
                 .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                .environment(\.colorScheme, .light)
         }
         
         

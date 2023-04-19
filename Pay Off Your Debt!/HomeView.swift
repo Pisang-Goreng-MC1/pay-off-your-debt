@@ -85,6 +85,7 @@ struct HomeView: View {
             .sheet(isPresented: $showingSheet) {
                 AddDebtSheet(showingContacts: $showingContacts, showingAlert: $showingAlert, showingSheet: $showingSheet)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .environment(\.colorScheme, .light)
             }
             .onAppear{
                 messageInSummary = getMessagesByDebtType(label: getDebtTypeByAmount(totalAmount: totalSummary))
